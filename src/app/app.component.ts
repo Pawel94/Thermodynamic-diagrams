@@ -10,34 +10,5 @@ Exporting(Highcharts);
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  Highcharts: typeof Highcharts = Highcharts;
-  linechart: any = {
-    series: [
-      {
-        data: [1, 2, 3],
-      },
-    ],
-    plotOptions: {
-      series: {
-        stickyTracking: false,
-        dragDrop: {
-          draggableY: false,
-          draggableX:true
-        }
-      },
-      column: {
-        stacking: "normal",
-        minPointLength: 2
-      },
-      line: {
-        cursor: "ns-resize"
-      }
-    },
-    chart: {
-      type: 'line',
-    },
-    title: {
-      text: 'linechart',
-    },
-  };
+
 }
