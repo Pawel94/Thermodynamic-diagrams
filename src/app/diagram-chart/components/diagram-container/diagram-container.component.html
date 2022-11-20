@@ -1,3 +1,15 @@
-<div>
-  <app-diagram></app-diagram>
-</div>
+<!--<div class="container">-->
+<!--  <div class="row">-->
+<!--    <div class="col-sm"><app-diagram></app-diagram></div>-->
+<!--    <div class="col-sm">DRUGIE</div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<mat-grid-list cols="2" rowHeight="100px">
+  <mat-grid-tile>Tile 1 (no header, no footer)</mat-grid-tile>
+  <mat-grid-tile>
+    <mat-grid-tile-header> </mat-grid-tile-header>
+    <app-diagram></app-diagram>
+  </mat-grid-tile>
+
+</mat-grid-list>
