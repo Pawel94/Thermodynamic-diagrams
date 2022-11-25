@@ -1,7 +1,11 @@
 <div class="container">
   <div class="row">
-    <div class="col-9"><app-diagram></app-diagram></div>
-    <div class="col-sm">DRUGIE</div>
+    <div ><app-diagram
+      [chartData$]="dataFromChart$"
+      (newChartData)="updateDataFromChart($event)"
+    ></app-diagram></div>
   </div>
+    <div class="row"><app-manager-container></app-manager-container></div>
+<button (click)="destroy()">XXX</button>
 </div>
 

@@ -1,0 +1,35 @@
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th scope="col">num</th>
+    <th scope="col">Temperature</th>
+    <th scope="col">Pressure</th>
+    <th scope="col">Dew point</th>
+    <th scope="col">RELI</th>
+    <th scope="col">Mixing Ratio</th>
+    <th scope="col">Wind Direction</th>
+    <th scope="col">Wind Speed</th>
+    <th scope="col">Potential Temperature</th>
+    <th scope="col">Equivalent Potential Temperature</th>
+    <th scope="col">Virtual Potential Temperature</th>
+
+
+  </tr>
+  </thead>
+  <tbody>
+  <tr    *ngFor="let thermodata of (dataFromChart$ |async) | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; index as i  ">
+    <td>{{ i + (page - 1) * pageSize}}</td>
+    <td>{{ thermodata?.temperature }}</td>
+    <td>{{ thermodata.pressure }}</td>
+    <td>{{ thermodata.dewpoint }}</td>
+    <td>{{ thermodata.relth }}</td>
+    <td>{{ thermodata.mixir }}</td>
+    <td>{{ thermodata.drct }}</td>
+    <td>{{ thermodata.sknt }}</td>
+    <td>{{ thermodata.THTA }}</td>
+    <td>{{ thermodata.THTE }}</td>
+    <td>{{ thermodata.THTV }}</td>
+  </tr>
+  <ngb-pagination [pageSize]="20" [collectionSize]="92" [(page)]="page" [directionLinks]="false"></ngb-pagination>
+  </tbody>
+</table>
