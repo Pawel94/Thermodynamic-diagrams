@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ThermodataService} from "../../../../common/services/share-services/thermodata/thermodata.service";
 import {map, Observable} from "rxjs";
-import {observationData, pointTO} from "../../../../diagram-chart/modal/modal";
+import {features, sharedObservationData} from "../../../../diagram-chart/modal/modal";
 
 
 @Component({
@@ -12,7 +12,7 @@ import {observationData, pointTO} from "../../../../diagram-chart/modal/modal";
 export class ThermodataComponent implements OnInit {
   pageSize = 20;
   page = 4;
-  dataFromChart$: Observable<observationData[]> = this.thermoDataService.thermoData$.pipe(map(x => x.dataFromUniversity))
+  dataToTable: Observable<features[] | undefined> = this.thermoDataService.thermoData$.pipe(map(x => x.coreData?.features))
 
 
   constructor(private readonly thermoDataService: ThermodataService) {

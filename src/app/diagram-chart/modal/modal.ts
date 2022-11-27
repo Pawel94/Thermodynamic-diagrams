@@ -26,16 +26,36 @@ export interface chartSerie {
 
 }
 
-export interface observationData {
+export interface sharedObservationData {
+  mappedDataToChart: pointTO[],
+  coreData?: dataFromObservations
+}
+
+
+export interface dataFromObservations {
+  features: features[]
+  properties: properties
+
+}
+
+export interface properties {
+  arrived: string,
+  channel: string
+  elewation: string,
+}
+
+export interface features {
+  geometry: any,
+  properties: measuredData
+}
+
+export interface measuredData {
+  dewpoint: number,
+  flags: number,
+  gpheight: number,
   pressure: number,
-  height: number
-  temperature: number
-  dewpoint: number | string
-  relth: number | string
-  mixir: number | string
-  drct: number | string
-  sknt: number | string
-  THTA: number | string
-  THTE: number | string
-  THTV: number | string
+  temp: number,
+  time: number,
+  wind_u: number,
+  wind_v: number,
 }

@@ -1,37 +1,35 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
-import {observationData, pointTO} from "../../../../diagram-chart/modal/modal";
+import {dataFromObservations, features, pointTO, sharedObservationData} from "../../../../diagram-chart/modal/modal";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ThermodataService {
 
-  tempData: any[] = [new pointTO(0, 1000), new pointTO(10, 700), new pointTO(5, 600), new pointTO(5, 500), new pointTO(5, 400), new pointTO(5, 300)]
+  tempData: any[] = [new pointTO(0, 1000), new pointTO(5, 700), new pointTO(6, 600), new pointTO(7, 500), new pointTO(5, 400), new pointTO(5, 300)]
 
-  private thermo$ = new BehaviorSubject<any>({data:[]});
+  private thermo$ = new BehaviorSubject<sharedObservationData>({mappedDataToChart: []});
   thermoData$ = this.thermo$.asObservable();
 
   constructor() {
 
   }
 
-  setDataForThermoChart(data: any) {
-    let mapObservationDataToPoints = this.mapObservationDataToPoints(data);
-    const object={
-      data:mapObservationDataToPoints,
-      dataFromUniversity:data
-    }
-    this.thermo$.next(object);
+  setActualDataToChart(data: dataFromObservations) {
+    const createdShareDataObject = {
+      mappedDataToChart: this.mapDataToChartPoints(data.features),
+      coreData: data
+    } as sharedObservationData
+    this.thermo$.next(createdShareDataObject);
+
   }
 
 
-  private mapObservationDataToPoints(recivedData: observationData[]) {
-    let listOfPoints: any[] = []
-
-    recivedData.map(data => {
-
-      listOfPoints.push( new pointTO(data.temperature,data.pressure))
+  private mapDataToChartPoints(data: features[]): pointTO[] {
+    let listOfPoints: pointTO[] = []
+    data.map(element => {
+      listOfPoints.push(new pointTO(element.properties.temp - 273, element.properties.pressure))
     })
     return listOfPoints;
   }

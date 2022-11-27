@@ -63,7 +63,6 @@ export const generateSaturationMixingRatioLine = (p:any, w0:number) => {
     dewpoint_from_e(pin * 100, (pin * 100 * w0) / (epsilon + w0))-273,
     pin,
   ]);
-  console.log(a)
 return a
 };
 const dewpoint_from_e = (p:any, e:any) => {

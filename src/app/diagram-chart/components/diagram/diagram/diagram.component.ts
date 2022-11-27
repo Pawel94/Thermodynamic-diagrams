@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import * as Highcharts from 'highcharts';
 import {
   generateDryAdiabatFunction,
@@ -21,7 +21,6 @@ Exporting(Highcharts);
   styleUrls: ['./diagram.component.scss']
 })
 export class DiagramComponent implements OnInit {
-  @ViewChild('chart') public chartElement?: ElementRef;
   updateFlag = false;
   chart: any;
   @Input() chartData$?: Observable<any>;
@@ -29,24 +28,26 @@ export class DiagramComponent implements OnInit {
   rage: number[] = [1000, 900, 800, 700, 600, 500, 400, 300, 200, 100]
   actualWeatherData?: any
   Highcharts: typeof Highcharts = Highcharts;
+  chartOptions?: Highcharts.Options;
   linechart: any;
 
 
 
   ngOnInit(): void {
     this.chartData$?.subscribe(x => {
-        this.actualWeatherData = x.data
+      this.actualWeatherData = x.mappedDataToChart
+      this.initChart()
+      this.getActualData()
+      this.addDryAdiabatsLines()
+      this.generateSaturationMixingRatioLines();
+      this.addMoistAdiabatsLines()
+
       }
     )
-    this.initChart()
-    this.getActualData()
-    this.addDryAdiabatsLines()
-    this.generateSaturationMixingRatioLines();
-    this.addMoistAdiabatsLines()
+
   }
 
   constructor(private readonly thermoService: ThermodataService) {
-
 
   }
 
@@ -123,7 +124,7 @@ export class DiagramComponent implements OnInit {
 
   private generateSaturationMixingRatioLines() {
 
-    let ratio = [2, 3, 4, 6]
+    let ratio = [1,2, 3, 4, 6,8,10,15,20,30,40,60,80,100]
     let result: any = []
     ratio.forEach(x => {
       let saturationMixingRatioLine = generateSaturationMixingRatioLine(this.rage, x);
@@ -174,6 +175,7 @@ export class DiagramComponent implements OnInit {
 
 
   getActualData() {
+    console.log(this.linechart.series)
     this.linechart.series[0] = {
       color: '#e56610',
       type: 'line',
@@ -188,12 +190,13 @@ export class DiagramComponent implements OnInit {
       name: 'Thermo data'
     };
     this.updateFlag = true;
+    console.log(this.linechart.series)
   }
 
   initChart() {
     this.linechart = {
       subtitle: {
-        text: 'Enagram Chart',
+        text: 'Emagram Chart',
         align: 'left'
       },
       series: [{
@@ -250,8 +253,9 @@ export class DiagramComponent implements OnInit {
         type: 'line',
       },
       title: {
-        text: 'Enagram chart',
+        text: 'Upper air sounding chart',
       },
     };
   }
+
 }

@@ -5,31 +5,24 @@
     <th scope="col">Temperature</th>
     <th scope="col">Pressure</th>
     <th scope="col">Dew point</th>
-    <th scope="col">RELI</th>
-    <th scope="col">Mixing Ratio</th>
-    <th scope="col">Wind Direction</th>
-    <th scope="col">Wind Speed</th>
-    <th scope="col">Potential Temperature</th>
-    <th scope="col">Equivalent Potential Temperature</th>
-    <th scope="col">Virtual Potential Temperature</th>
+    <th scope="col">Wind velocity</th>
+    <th scope="col">Wind ??</th>
+    <th scope="col">Height</th>
+
 
 
   </tr>
   </thead>
   <tbody>
-  <tr    *ngFor="let thermodata of (dataFromChart$ |async) | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; index as i  ">
+  <tr    *ngFor="let thermodata of (dataToTable |async) | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; index as i  ">
     <td>{{ i + (page - 1) * pageSize}}</td>
-    <td>{{ thermodata?.temperature }}</td>
-    <td>{{ thermodata.pressure }}</td>
-    <td>{{ thermodata.dewpoint }}</td>
-    <td>{{ thermodata.relth }}</td>
-    <td>{{ thermodata.mixir }}</td>
-    <td>{{ thermodata.drct }}</td>
-    <td>{{ thermodata.sknt }}</td>
-    <td>{{ thermodata.THTA }}</td>
-    <td>{{ thermodata.THTE }}</td>
-    <td>{{ thermodata.THTV }}</td>
+    <td>{{ thermodata.properties.temp }}</td>
+    <td>{{ thermodata.properties.pressure }}</td>
+    <td>{{ thermodata.properties.dewpoint }}</td>
+    <td>{{ thermodata.properties.wind_v }}</td>
+    <td>{{ thermodata.properties.wind_u }}</td>
+    <td>{{ thermodata.properties.gpheight }}</td>
   </tr>
-  <ngb-pagination [pageSize]="20" [collectionSize]="92" [(page)]="page" [directionLinks]="false"></ngb-pagination>
+  <ngb-pagination [pageSize]="60" [collectionSize]="388" [(page)]="page" [directionLinks]="false"></ngb-pagination>
   </tbody>
 </table>

@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Observable} from "rxjs";
+import {map, Observable} from "rxjs";
 import {ThermodataService} from "../../../common/services/share-services/thermodata/thermodata.service";
 import {DiagramService} from "../../services/diagram.service";
+import {sharedObservationData} from "../../modal/modal";
 
 @Component({
   selector: 'app-diagram-container',
@@ -9,31 +10,30 @@ import {DiagramService} from "../../services/diagram.service";
   styleUrls: ['./diagram-container.component.scss']
 })
 export class DiagramContainerComponent implements OnInit {
-  dataFromChart$: Observable<number[][]> = this.thermoDataService.thermoData$
-
+  dataFromChart$: Observable<sharedObservationData> = this.thermoDataService.thermoData$
+  dataToChart$: Observable<any> = this.diagramService.getDataFromOgimet()
   constructor(private readonly thermoDataService: ThermodataService, private readonly diagramService: DiagramService) {
   }
 
   ngOnInit(): void {
     this.update()
+
   }
 
   updateDataFromChart($event: any) {
     console.log($event)
-    // const obj = {
-    //   data: $event
-    // } as chartOfPoints
-    // this.thermoDataService.setDataForThermoChart(obj)
+    const object = {
+      data: $event,
+      dataFromUniversity: {}
+    }
+
   }
 
   update() {
-    this.diagramService.getDataFromServer().subscribe(result => {
-      console.log(result);
-      this.thermoDataService.setDataForThermoChart(result)
-    })
+    this.dataToChart$.subscribe(dataToChart => this.thermoDataService.setActualDataToChart(dataToChart))
   }
 
   destroy() {
-    this.thermoDataService.setDataForThermoChart({data:{}})
+
   }
 }
