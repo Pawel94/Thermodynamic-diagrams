@@ -22,7 +22,7 @@ export function generateDryAdiabatFunction(temper: number): number[][] {
     const val = (pressure / 1000)
     const result = Math.pow(val, 0.288) * kelvinTemp
     point = [result - 273, pressure]
-    if (result - 273 < 100) points.push(point)
+   points.push(point)
   })
   return points
 }

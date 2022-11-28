@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import * as Highcharts from 'highcharts';
 import {
   generateDryAdiabatFunction,
@@ -6,7 +6,7 @@ import {
   generateSaturationMixingRatioLine,
 } from "../../../../common/utils";
 import {Observable} from "rxjs";
-import {chartSerie} from "../../../modal/modal";
+import {helperLines, pointTO} from "../../../modal/modal";
 import {ThermodataService} from "../../../../common/services/share-services/thermodata/thermodata.service";
 
 
@@ -22,26 +22,27 @@ Exporting(Highcharts);
 })
 export class DiagramComponent implements OnInit {
   updateFlag = false;
-  chart: any;
   @Input() chartData$?: Observable<any>;
   @Output() newChartData = new EventEmitter<any>();
-  rage: number[] = [1000, 900, 800, 700, 600, 500, 400, 300, 200, 100]
-  actualWeatherData?: any
+  rage: number[] = [1100, 1000, 900, 800, 700, 600, 500, 400, 300, 200, 100]
+  actualObservationTemperature?: pointTO[]
+  actualObservationDewTemperature?: pointTO[]
+  coreData?: any;
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions?: Highcharts.Options;
   linechart: any;
 
 
-
   ngOnInit(): void {
     this.chartData$?.subscribe(x => {
-      this.actualWeatherData = x.mappedDataToChart
-      this.initChart()
-      this.getActualData()
-      this.addDryAdiabatsLines()
-      this.generateSaturationMixingRatioLines();
-      this.addMoistAdiabatsLines()
-
+        this.actualObservationTemperature = x.mappedDataToChart.listOfPointsTemperature
+        this.actualObservationDewTemperature = x.mappedDataToChart.listOfPointsDewTemperature
+        this.coreData = x.toChart
+        this.initChart()
+        this.drawFunction()
+        this.addDryAdiabatsLines()
+        this.generateSaturationMixingRatioLines();
+        this.addMoistAdiabatsLines()
       }
     )
 
@@ -53,114 +54,45 @@ export class DiagramComponent implements OnInit {
 
 
   private addDryAdiabatsLines() {
-    let dryAdiobatsSerie = {
-      data: generateDryAdiabatFunction(-80),
-      color: 'rgba(227,12,12,0.32)',
-      enableMouseTracking: false,
-      dashStyle: 'Dot',
-      zIndex: 5,
-      lineWidth: 1,
-      name: 'dry adiobate',
-    } as chartSerie
-
-    this.linechart.series?.push(dryAdiobatsSerie)
+    let dryAdiobatsSerie = this.generateLineOnChart("Dry adiobat", '#cb0e3a');
+    this.linechart.series.push(dryAdiobatsSerie)
 
     for (let i = -80; i < 150; i += 10) {
-      let dryAdiobatsSeries = {
-        data: generateDryAdiabatFunction(i),
-        enableMouseTracking: false,
-        marker: {
-          enabled: false
-        },
-        color: 'rgba(227,12,12,0.32)',
-        dashStyle: 'line',
-        lineWidth: 2,
-        zIndex: 5,
-        linkedTo: ':previous',
-      }
-      this.linechart.series?.push(dryAdiobatsSeries)
+      let dryAdiobatsSeries = this.generateLineOnChart('Ratio', '#cb0e3a',
+        generateDryAdiabatFunction(i), ':previous')
+      this.linechart.series.push(dryAdiobatsSeries)
     }
   }
 
+
   private addMoistAdiabatsLines() {
-    let obj = {
-      data: generateMoistAdiabaticEmagramLine(this.rage, -90),
-      enableMouseTracking: false,
-      marker: {
-        enabled: false
-      },
-      color: '#2f7ed8',
-      dashStyle: 'Dot',
-      name: 'moist adiabatic',
-      zIndex: 5,
-      lineWidth: 2,
-    }
+
+    let obj = this.generateLineOnChart('Moist adiabatic', '#2f7ed8')
     this.linechart.series.push(obj)
+
     for (let i = -80; i < 60; i += 10) {
-      let obj = {
-        data: generateMoistAdiabaticEmagramLine(this.rage, i),
-        marker: {
-          enabled: false
-        },
-        enableMouseTracking: false,
-        color: '#2f7ed8',
-        dashStyle: 'line',
-        linkedTo: ':previous',
-        lineWidth: 2,
-        zIndex: 5,
-        dataLabels: {
-          enabled: false,
-          crop: false,
-          overflow: 'none',
-          align: 'left',
-          verticalAlign: 'middle',
-
-
-        },
-      }
+      let obj = this.generateLineOnChart('Moist adiabatic', '#2f7ed8',
+        generateMoistAdiabaticEmagramLine(this.rage, i), ':previous')
       this.linechart.series.push(obj)
     }
   }
 
   private generateSaturationMixingRatioLines() {
 
-    let ratio = [1,2, 3, 4, 6,8,10,15,20,30,40,60,80,100]
+    let ratio = [1, 2, 3, 4, 6, 8, 10, 15, 20, 30, 40, 60, 80, 100]
     let result: any = []
     ratio.forEach(x => {
       let saturationMixingRatioLine = generateSaturationMixingRatioLine(this.rage, x);
       result.push(saturationMixingRatioLine)
     })
-    let obj = {
-      data: generateSaturationMixingRatioLine(this.rage, 1),
-      enableMouseTracking: false,
-      marker: {
-        enabled: false
-      },
-      color: '#40d82f',
-      dashStyle: 'line',
-      name: 'ratio',
-      zIndex: 6,
-      lineWidth: 2,
-    }
+
+    let obj = this.generateLineOnChart('Ratio', '#40d82f')
     this.linechart.series.push(obj)
 
     result.forEach((x: any) => {
-      let obj = {
-        data: x,
-        enableMouseTracking: false,
-        marker: {
-          enabled: false
-        },
-        color: '#40d82f',
-        dashStyle: 'line',
-        lineWidth: 2,
-        id: 'ratio',
-        zIndex: 6,
-        linkedTo: ':previous'
-      }
-
+      let obj = this.generateLineOnChart('Ratio', '#40d82f',
+        x, ':previous')
       this.linechart.series.push(obj)
-
     })
 
   }
@@ -168,19 +100,19 @@ export class DiagramComponent implements OnInit {
   detectClick() {
     this.linechart.series.forEach((x: any) => {
       if (x.name === "Thermo data") {
-        this.newChartData.emit(x.data)
+        this.newChartData.emit({points: x, coreData:this.coreData})
       }
     })
   }
 
 
-  getActualData() {
-    console.log(this.linechart.series)
-    this.linechart.series[0] = {
+  drawFunction() {
+    const chartObject = {
       color: '#e56610',
       type: 'line',
-      data: this.actualWeatherData,
-      pointInterval: 5,
+      data: this.actualObservationTemperature,
+      pointStart: 900,
+      pointInterval: 1550123,
       zIndex: 1,
       lineWidth: 6,
       dragDrop: {
@@ -189,8 +121,21 @@ export class DiagramComponent implements OnInit {
       },
       name: 'Thermo data'
     };
+    this.drawNormalFunction(chartObject)
+    this.drawMoistFunction(chartObject)
     this.updateFlag = true;
-    console.log(this.linechart.series)
+  }
+
+  drawNormalFunction(chartObject: any) {
+    this.linechart.series[0] = chartObject
+  }
+
+  drawMoistFunction(chartObject: any) {
+    const newChart = {...chartObject}
+    newChart.color = '#104ce5';
+    newChart.data = this.actualObservationDewTemperature
+    newChart.name = 'Dew point function';
+    this.linechart.series[1] = newChart
   }
 
   initChart() {
@@ -232,8 +177,6 @@ export class DiagramComponent implements OnInit {
         gridLineWidth: 1,
         type: 'logarithmic',
         reversed: true,
-        // showFirstLabel: false,
-        // showLastLabel: true,
         min: 100,
         max: 900
 
@@ -258,4 +201,12 @@ export class DiagramComponent implements OnInit {
     };
   }
 
+  private generateLineOnChart(name: string, color: string, data?: any, linkedTo?: string) {
+    let lineObject = new helperLines
+    lineObject.name = name
+    lineObject.color = color
+    lineObject.data = data
+    lineObject.linkedTo = linkedTo
+    return lineObject
+  }
 }

@@ -11,8 +11,9 @@ import {sharedObservationData} from "../../modal/modal";
 })
 export class DiagramContainerComponent implements OnInit {
   dataFromChart$: Observable<sharedObservationData> = this.thermoDataService.thermoData$
-  dataToChart$: Observable<any> = this.diagramService.getDataFromOgimet()
-  constructor(private readonly thermoDataService: ThermodataService, private readonly diagramService: DiagramService) {
+  dataToChart$: Observable<any> = this.diagramService.getActualData()
+  constructor(private readonly thermoDataService: ThermodataService,
+              private readonly diagramService: DiagramService) {
   }
 
   ngOnInit(): void {
@@ -22,15 +23,11 @@ export class DiagramContainerComponent implements OnInit {
 
   updateDataFromChart($event: any) {
     console.log($event)
-    const object = {
-      data: $event,
-      dataFromUniversity: {}
-    }
-
   }
 
   update() {
-    this.dataToChart$.subscribe(dataToChart => this.thermoDataService.setActualDataToChart(dataToChart))
+    this.dataToChart$
+      .subscribe(dataToChart => this.thermoDataService.setActualDataToChart(dataToChart))
   }
 
   destroy() {

@@ -22,15 +22,38 @@ export class ThermodataService {
       coreData: data
     } as sharedObservationData
     this.thermo$.next(createdShareDataObject);
+  }
 
+  setActualDataFromChart(data: any) {
+    const createdShareDataObject = {
+      mappedDataToChart: data,
+      coreData: this.mappPointsToPressureAndTemperature(data)
+    } as sharedObservationData
+    this.thermo$.next(createdShareDataObject);
   }
 
 
-  private mapDataToChartPoints(data: features[]): pointTO[] {
-    let listOfPoints: pointTO[] = []
+  private mapDataToChartPoints(data: features[]): any {
+    let listOfPointsTemperature: pointTO[] = []
+    let listOfPointsDewTemperature: pointTO[] = []
     data.map(element => {
-      listOfPoints.push(new pointTO(element.properties.temp - 273, element.properties.pressure))
+      listOfPointsTemperature.push(new pointTO(element.properties.temp - 273, element.properties.pressure))
+      listOfPointsDewTemperature.push(new pointTO(element.properties.dewpoint - 273, element.properties.pressure))
     })
-    return listOfPoints;
+
+    return {listOfPointsTemperature, listOfPointsDewTemperature}
+  }
+
+  private mappPointsToPressureAndTemperature(data: dataFromObservations): any {
+
+    data.features.map(element => {
+      element.properties.temp = element.properties.chart_value.x
+      element.properties.pressure = element.properties.chart_value.y
+    })
+
+    return {
+      features: data.features,
+      properties: data.properties
+    }
   }
 }

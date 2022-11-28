@@ -1,20 +1,17 @@
 <table class="table table-striped">
   <thead>
   <tr>
-    <th scope="col">num</th>
+    <th scope="col">Punkt number</th>
     <th scope="col">Temperature</th>
     <th scope="col">Pressure</th>
     <th scope="col">Dew point</th>
     <th scope="col">Wind velocity</th>
     <th scope="col">Wind ??</th>
     <th scope="col">Height</th>
-
-
-
   </tr>
   </thead>
   <tbody>
-  <tr    *ngFor="let thermodata of (dataToTable |async) | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; index as i  ">
+  <tr *ngFor="let thermodata of (dataToTable |async) | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; index as i  ">
     <td>{{ i + (page - 1) * pageSize}}</td>
     <td>{{ thermodata.properties.temp }}</td>
     <td>{{ thermodata.properties.pressure }}</td>

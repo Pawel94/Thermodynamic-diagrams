@@ -1,8 +1,3 @@
-export interface point {
-  point: [number][number]
-}
-
-
 export class pointTO {
   x: number;
   y: number;
@@ -14,6 +9,7 @@ export class pointTO {
 }
 
 export interface chartSerie {
+  name: string
   data?: any,
   marker?: {
     enabled: false
@@ -23,7 +19,7 @@ export interface chartSerie {
   lineWidth?: number,
   id?: string,
   linkedTo?: string
-
+  zIndex?: number
 }
 
 export interface sharedObservationData {
@@ -31,11 +27,9 @@ export interface sharedObservationData {
   coreData?: dataFromObservations
 }
 
-
 export interface dataFromObservations {
   features: features[]
   properties: properties
-
 }
 
 export interface properties {
@@ -58,4 +52,39 @@ export interface measuredData {
   time: number,
   wind_u: number,
   wind_v: number,
+  chart_value: pointTO
+  chart_value_dew: pointTO
+}
+
+export let helperLine = {
+  color: 'rgba(227,12,12,0.32)',
+  enableMouseTracking: false,
+  dashStyle: 'Line',
+  zIndex: 5,
+  lineWidth: 1,
+  name: '',
+} as chartSerie
+
+export class helperLines {
+  color: string
+  enableMouseTracking: boolean
+  dashStyle: string
+  zIndex: number
+  lineWidth: number
+  name: string
+  data: any;
+  linkedTo: any;
+  marker: any;
+
+  constructor() {
+    this.color = 'rgba(227,12,12,0.32)'
+    this.enableMouseTracking = false;
+    this.dashStyle = 'Line';
+    this.zIndex = 5;
+    this.lineWidth = 1;
+    this.name = '';
+    this.marker = {
+      enabled: false
+    }
+  }
 }
