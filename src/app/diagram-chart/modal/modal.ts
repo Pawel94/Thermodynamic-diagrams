@@ -23,13 +23,16 @@ export interface chartSerie {
 }
 
 export interface sharedObservationData {
-  mappedDataToChart: pointTO[],
+  mappedDataToChart: pointTO[]
   coreData?: dataFromObservations
+  modifiedData:measuredData[]
 }
 
 export interface dataFromObservations {
   features: features[]
   properties: properties
+  mappedDataToChart:measuredData[]
+
 }
 
 export interface properties {
@@ -54,6 +57,7 @@ export interface measuredData {
   wind_v: number,
   chart_value: pointTO
   chart_value_dew: pointTO
+  id: number
 }
 
 export let helperLine = {

@@ -100,7 +100,7 @@ export class DiagramComponent implements OnInit {
   detectClick() {
     this.linechart.series.forEach((x: any) => {
       if (x.name === "Thermo data") {
-        this.newChartData.emit({points: x, coreData:this.coreData})
+        this.newChartData.emit({points: x, coreData: this.coreData})
       }
     })
   }
