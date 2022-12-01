@@ -27,11 +27,21 @@ export class ThermodataService {
 
 
   private mapDataToPointsOnChart(data: measuredData[]) {
-    let listOfPointsTemperature: pointTO[] = []
-    let listOfPointsDewTemperature: pointTO[] = []
+    let listOfPointsTemperature: any[] = []
+    let listOfPointsDewTemperature: any[] = []
     data.map(element => {
-      listOfPointsTemperature.push(new pointTO(element.temp , element.pressure))
-      listOfPointsDewTemperature.push(new pointTO(element.dewpoint , element.pressure))
+      listOfPointsTemperature.push({
+        x: element.temp,
+        y: element.pressure,
+        color: 'black',
+        marker: {enabled: element.showMarker}
+      })
+      listOfPointsDewTemperature.push({
+        x: element.dewpoint,
+        y: element.pressure,
+        color: 'orange',
+        marker: {enabled: element.showMarkerDew}
+      })
     })
 
     return {listOfPointsTemperature, listOfPointsDewTemperature}

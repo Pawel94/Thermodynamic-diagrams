@@ -58,6 +58,8 @@ export interface measuredData {
   chart_value: pointTO
   chart_value_dew: pointTO
   id: number
+  showMarker:boolean
+  showMarkerDew:boolean
 }
 
 export let helperLine = {

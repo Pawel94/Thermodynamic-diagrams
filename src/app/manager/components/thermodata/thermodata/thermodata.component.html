@@ -1,10 +1,19 @@
 <div class="container m-2">
-  <div class="row">
-    <div class="col-4">
-      <button class="btn btn-outline-danger" (click)="onRemoveSelected()">Remove selected rows</button>
-
+  <div class="row justify-content-md-center">
+    <div class="col-2">
+      <button class="btn btn-outline-dark" [disabled]="isSelectedRow()" (click)="saveEditedCells()">Save edited cells</button>
+    </div>
+    <div class="col-3">
+      <button class="btn btn-outline-info" [disabled]="isSelectedRow()" (click)="markSelectedCells()">Mark selected points - Temp</button>
+    </div>
+    <div class="col-3">
+      <button class="btn btn-outline-info" [disabled]="isSelectedRow()" (click)="markDewSelectedCells()">Mark selected points - Dew</button>
+    </div>
+    <div class="col-2">
+      <button class="btn btn-outline-danger" [disabled]="isSelectedRow()" (click)="onRemoveSelected()">Remove selected rows</button>
     </div>
   </div>
+  <p *ngIf="isSelectedRow()">Select row to activate action</p>
 </div>
 
 <ag-grid-angular
@@ -15,6 +24,8 @@
   [pagination]="true"
   [paginationPageSize]="paginationPageSize"
   (cellValueChanged)="onCellValueChanged($event)"
+  [rowClassRules]="rowClassRules"
+  [defaultColDef]="defaultColDef"
   [rowSelection]="rowSelection"
   (gridReady)="onGridReady($event)">
 </ag-grid-angular>
