@@ -10,7 +10,7 @@ import {sharedObservationData} from "../../modal/modal";
   styleUrls: ['./diagram-container.component.scss']
 })
 export class DiagramContainerComponent implements OnInit {
-  dataFromChart$: Observable<sharedObservationData> = this.thermoDataService.thermoData$
+  mappedDataToDiagram$:Observable<any> = this.thermoDataService.mappedDataToDiagram$
   dataToChart$: Observable<any> = this.diagramService.getActualData()
 
   constructor(private readonly thermoDataService: ThermodataService,
@@ -28,7 +28,9 @@ export class DiagramContainerComponent implements OnInit {
 
   update() {
     this.dataToChart$
-      .subscribe(dataToChart => this.thermoDataService.setActualTermoData(dataToChart.mappedDataToChart))
+      .subscribe(dataToChart =>{
+        this.thermoDataService.setActualTermoData(dataToChart)
+      })
   }
 
   destroy() {

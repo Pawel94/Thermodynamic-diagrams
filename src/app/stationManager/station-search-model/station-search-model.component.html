@@ -1,0 +1,35 @@
+<div>
+  <div tabindex="-1" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add new waypoint</h5>
+        <button type="button" class="btn close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="searchForm">
+          <div class="mb-3">
+            <label for="dateOfBirth">Date of measurement</label>
+            <div class="input-group">
+              <input
+                id="dateOfBirth"
+                class="form-control"
+                formControlName="calendar"
+                placeholder="yyyy-mm-dd"
+                name="dp"
+                ngbDatepicker
+                #dp="ngbDatepicker"
+              />
+              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="dp.toggle()" type="button"></button>
+            </div>
+          </div>
+          <label for="stationNummer">Station nummer (narazie tylko warszawa 12374 data tylko od 10 - 30):</label>
+          <input id="stationNummer" type="number" class="form-control" formControlName="stationNummer"/>
+          <button (click)="getDataFromStation()" class="btn btn-info"> Get data
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

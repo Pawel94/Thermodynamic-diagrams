@@ -39,6 +39,8 @@ export interface properties {
   arrived: string,
   channel: string
   elewation: string,
+  station_id:string
+  gts_topic:string
 }
 
 export interface features {

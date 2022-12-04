@@ -15,6 +15,8 @@ import {HttpClientModule} from "@angular/common/http";
 import {AgGridModule} from "ag-grid-angular";
 import { BtnCellShowComponent } from './manager/components/thermodata/btn-cell-show/btn-cell-show.component';
 import { BtnCellRemoveComponent } from './manager/components/thermodata/btn-cell-remove/btn-cell-remove.component';
+import { StationSearchModelComponent } from './stationManager/station-search-model/station-search-model.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -26,14 +28,15 @@ import { BtnCellRemoveComponent } from './manager/components/thermodata/btn-cell
     ThermodataComponent,
     BtnCellShowComponent,
     BtnCellRemoveComponent,
+    StationSearchModelComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule, HighchartsChartModule, BrowserAnimationsModule,
-    NgbModule,
-    HttpClientModule,
-    AgGridModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule, HighchartsChartModule, BrowserAnimationsModule,
+        NgbModule,
+        HttpClientModule,
+        AgGridModule, ReactiveFormsModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

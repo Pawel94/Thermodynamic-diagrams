@@ -22,7 +22,7 @@ Exporting(Highcharts);
 })
 export class DiagramComponent implements OnInit {
   updateFlag = false;
-  @Input() chartData$?: Observable<any>;
+  @Input() mappedChartData$?: Observable<any>;
   @Output() newChartData = new EventEmitter<any>();
   rage: number[] = [1100, 1000, 900, 800, 700, 600, 500, 400, 300, 200, 100]
   actualObservationTemperature?: pointTO[]
@@ -34,10 +34,9 @@ export class DiagramComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.chartData$?.subscribe(x => {
-        this.actualObservationTemperature = x.mappedDataToChart.listOfPointsTemperature
-        this.actualObservationDewTemperature = x.mappedDataToChart.listOfPointsDewTemperature
-        this.coreData = x.toChart
+    this.mappedChartData$?.subscribe(chartData => {
+        this.actualObservationTemperature = chartData.listOfPointsTemperature
+        this.actualObservationDewTemperature = chartData.listOfPointsDewTemperature
         this.initChart()
         this.drawFunction()
         this.addDryAdiabatsLines()
@@ -109,7 +108,10 @@ export class DiagramComponent implements OnInit {
   drawFunction() {
     const chartObject = {
       color: '#e56610',
-      type: 'line',
+      type: 'scatter',
+      marker: {
+        enabled: false
+      },
       data: this.actualObservationTemperature,
       pointStart: 900,
       pointInterval: 1550123,
