@@ -17,6 +17,7 @@ import { BtnCellShowComponent } from './manager/components/thermodata/btn-cell-s
 import { BtnCellRemoveComponent } from './manager/components/thermodata/btn-cell-remove/btn-cell-remove.component';
 import { StationSearchModelComponent } from './stationManager/station-search-model/station-search-model.component';
 import {ReactiveFormsModule} from "@angular/forms";
+import { InfoModalComponent } from './common/component/info-modal/info-modal.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import {ReactiveFormsModule} from "@angular/forms";
     BtnCellShowComponent,
     BtnCellRemoveComponent,
     StationSearchModelComponent,
+    InfoModalComponent,
   ],
     imports: [
         BrowserModule,

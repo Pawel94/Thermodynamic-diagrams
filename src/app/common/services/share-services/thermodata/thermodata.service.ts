@@ -47,7 +47,6 @@ export class ThermodataService {
   private mapDataToPointsOnChart(data: measuredData[]) {
     let listOfPointsTemperature: any[] = []
     let listOfPointsDewTemperature: any[] = []
-    console.warn(data)
     data.map(element => {
       if (element.pressure > 100) {
         listOfPointsTemperature.push({

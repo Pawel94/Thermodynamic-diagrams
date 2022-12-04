@@ -5,6 +5,7 @@ import {properties} from "../../../diagram-chart/modal/modal";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {StationSearchModelComponent} from "../../../stationManager/station-search-model/station-search-model.component";
 import {ThermodataService} from "../../services/share-services/thermodata/thermodata.service";
+import {InfoModalComponent} from "../info-modal/info-modal.component";
 
 @Component({
   selector: 'app-toolbar',
@@ -34,6 +35,15 @@ export class ToolbarComponent implements OnInit {
 
   openModal() {
     const modalRef = this.modalService.open(StationSearchModelComponent);
+    modalRef.result.then((result) => {
+      console.log(result);
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+  openInfoModal() {
+    const modalRef = this.modalService.open(InfoModalComponent);
     modalRef.result.then((result) => {
       console.log(result);
     }).catch((error) => {

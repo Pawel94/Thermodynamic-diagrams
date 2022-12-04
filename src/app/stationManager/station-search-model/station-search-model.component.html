@@ -2,7 +2,7 @@
   <div tabindex="-1" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add new waypoint</h5>
+        <h5 class="modal-title text-success" id="exampleModalLabel">Get new data from station</h5>
         <button type="button" class="btn close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -10,7 +10,7 @@
       <div class="modal-body">
         <form [formGroup]="searchForm">
           <div class="mb-3">
-            <label for="dateOfBirth">Date of measurement</label>
+            <label for="dateOfBirth" class="text-success">Date of measurement</label>
             <div class="input-group">
               <input
                 id="dateOfBirth"
@@ -24,9 +24,14 @@
               <button class="btn btn-outline-secondary bi bi-calendar3" (click)="dp.toggle()" type="button"></button>
             </div>
           </div>
-          <label for="stationNummer">Station nummer (narazie tylko warszawa 12374 data tylko od 10 - 30):</label>
-          <input id="stationNummer" type="number" class="form-control" formControlName="stationNummer"/>
-          <button (click)="getDataFromStation()" class="btn btn-info"> Get data
+          <label for="stationNummer" class="text-success">Station number:</label>
+          <select  id="stationNummer" formControlName="stationNummer" class="form-select" aria-label="Default select example">
+            <option selected value="12374">Station:12374 - Warszawa</option>
+<!--            <option value="2">Two</option>-->
+<!--            <option value="3">Three</option>-->
+          </select>
+<!--          <input id="stationNummer" type="number" class="form-control" formControlName="stationNummer"/>-->
+          <button (click)="getDataFromStation()" class="btn btn btn-outline-success mt-2"> Get data
           </button>
         </form>
       </div>
