@@ -50,13 +50,13 @@ export class ThermodataService {
     data.map(element => {
       if (element.pressure > 100) {
         listOfPointsTemperature.push({
-          x: element.temp.toFixed(2),
+          x: Number(element.temp).toFixed(2),
           y: element.pressure,
           color: 'black',
           marker: {enabled: element.showMarker}
         })
         listOfPointsDewTemperature.push({
-          x: element.dewpoint.toFixed(2),
+          x: Number(element.dewpoint).toFixed(2),
           y: element.pressure,
           color: 'orange',
           marker: {enabled: element.showMarkerDew}

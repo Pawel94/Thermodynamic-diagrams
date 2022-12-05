@@ -58,6 +58,7 @@ export class ThermodataComponent implements OnInit {
     {
       headerName: 'Temp. [C]',
       cellStyle: {textAlign: 'center'},
+      cellClass: 'edit-cell',
       editable: true,
       valueFormatter: (params: any) => params.data.temp + " ºC",
       width: 100,
@@ -67,12 +68,15 @@ export class ThermodataComponent implements OnInit {
       headerName: 'Temp. dew point [C]',
       width: 100,
       cellStyle: {textAlign: 'center'},
+      cellClass: 'edit-cell',
       valueFormatter: (params: any) => params.data.dewpoint + " ºC",
       field: "dewpoint"
     },
     {headerName: 'Height [m]', width: 150, cellStyle: {textAlign: 'center'}, field: "gpheight"},
-    {headerName: 'Wind u ?', width: 150, cellStyle: {textAlign: 'center'}, field: "wind_u"},
-    {headerName: 'Wind velocity [m/s]', width: 100, cellStyle: {textAlign: 'center'}, field: "wind_v"},
+    {headerName: 'Wind  [m/s]', width: 150, cellStyle: {textAlign: 'center'}, field: "wind"},
+    {headerName: 'Wind direction', width: 150, cellStyle: {textAlign: 'center'}, field: "windDirection"},
+    {headerName: 'Wind u ', width: 150, cellStyle: {textAlign: 'center'}, field: "wind_u"},
+    {headerName: 'Wind v', width: 100, cellStyle: {textAlign: 'center'}, field: "wind_v"},
     {
       headerName: 'Show Point in temperature chart', cellStyle: {textAlign: 'center'}, field: "", width: 100,
       cellRenderer: (params: any) => {
@@ -188,6 +192,7 @@ export class ThermodataComponent implements OnInit {
 
   private updateChartWithNewData() {
     this.getRowData()
+    console.log(this.actualRowData)
     this.thermoDataService.setActualDataFromTable(this.actualRowData)
     this.thermoDataService.setActualDataToTable(this.actualRowData)
   }

@@ -62,6 +62,8 @@ export interface measuredData {
   id: number
   showMarker:boolean
   showMarkerDew:boolean
+  wind?:string
+  windDirection?:string
 }
 
 export let helperLine = {
