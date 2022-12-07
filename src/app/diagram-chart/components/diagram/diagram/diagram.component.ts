@@ -23,6 +23,7 @@ Exporting(Highcharts);
 export class DiagramComponent implements OnInit {
   updateFlag = false;
   @Input() mappedChartData$?: Observable<any>;
+  @Input() mappedChartSkewTData$?:Observable<any>
   @Output() newChartData = new EventEmitter<any>();
   rage: number[] = [1100, 1000, 900, 800, 700, 600, 500, 400, 300, 200, 100]
   actualObservationTemperature?: pointTO[]
@@ -30,7 +31,8 @@ export class DiagramComponent implements OnInit {
   coreData?: any;
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions?: Highcharts.Options;
-  linechart: any;
+  linechart: any
+  chartFlag: boolean=true;
 
 
   ngOnInit(): void {
@@ -210,5 +212,9 @@ export class DiagramComponent implements OnInit {
     lineObject.data = data
     lineObject.linkedTo = linkedTo
     return lineObject
+  }
+
+  changeChart() {
+    this.chartFlag =!this.chartFlag
   }
 }

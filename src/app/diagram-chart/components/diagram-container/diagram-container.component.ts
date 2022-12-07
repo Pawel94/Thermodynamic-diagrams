@@ -11,6 +11,8 @@ import {sharedObservationData} from "../../modal/modal";
 })
 export class DiagramContainerComponent implements OnInit {
   mappedDataToDiagram$:Observable<any> = this.thermoDataService.mappedDataToDiagram$
+  mappedDataToSkewTDiagram$:Observable<any> = this.thermoDataService.mappedDataToSkewTDiagram$
+
   dataToChart$: Observable<any> = this.diagramService.getActualData()
 
   constructor(private readonly thermoDataService: ThermodataService,

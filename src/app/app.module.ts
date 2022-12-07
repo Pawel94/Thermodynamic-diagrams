@@ -18,6 +18,7 @@ import { BtnCellRemoveComponent } from './manager/components/thermodata/btn-cell
 import { StationSearchModelComponent } from './stationManager/station-search-model/station-search-model.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import { InfoModalComponent } from './common/component/info-modal/info-modal.component';
+import { DiagramSkewTComponent } from './diagram-chart/components/diagram/diagram-skew-t/diagram-skew-t.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { InfoModalComponent } from './common/component/info-modal/info-modal.com
     BtnCellRemoveComponent,
     StationSearchModelComponent,
     InfoModalComponent,
+    DiagramSkewTComponent,
   ],
     imports: [
         BrowserModule,

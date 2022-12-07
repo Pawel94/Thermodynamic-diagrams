@@ -11,6 +11,35 @@ export function generateLinearFunction(a: number, b: number): number[][] {
   return points
 }
 
+export function generateThermoLines(temper: number): number[][] {
+  const points: number[][] = [];
+  let point: number[];
+  const pressureRage = generateRage(0, 1050)
+
+  pressureRage.forEach(pressure => {
+    let scewT_temperature = temper+35*Math.log(1000/pressure)
+    point = [scewT_temperature, pressure]
+    points.push(point)
+  })
+  return points
+}
+export function generateDryAdiabatFunctionForSkewT(temper: number): number[][] {
+  const points: number[][] = [];
+  let point: number[];
+  const pressureRage = generateRage(0, 1050)
+
+  const kelvinTemp = temper + 273
+
+  pressureRage.forEach(pressure => {
+    const val = (pressure / 1000)
+    const result = Math.pow(val, 0.288) * kelvinTemp
+    let temperature = result - 273
+    let scewT_temperature = temperature+35*Math.log(1000/pressure)
+    point = [scewT_temperature, pressure]
+    points.push(point)
+  })
+  return points
+}
 export function generateDryAdiabatFunction(temper: number): number[][] {
   const points: number[][] = [];
   let point: number[];
@@ -51,11 +80,45 @@ export const generateMoistAdiabaticEmagramLine = (p: any, t0: any) => {
 
     }
     results.push([p[i + 1], t]);
+
     point = [t, p[i + 1]]
     points.push(point)
   }
   return points;
 };
+
+export const generateMoistAdiabaticSkewTLine = (p: any, t0: any) => {
+  const points: number[][] = [];
+  let point: number[];
+  let results = [[p[0], t0]];
+
+  let t = t0;
+
+  for (let i = 0; i < p.length - 1; i++) {
+    if (Math.log(p[i + 1]) - Math.log(p[i]) < Math.log(790) - Math.log(800)) {
+      //      const n = 15;
+      const n =
+        Math.floor(
+          (Math.log(p[i + 1]) - Math.log(p[i])) /
+          (Math.log(790) - Math.log(800))
+        ) + 1;
+      const p_sub = linspace(p[i], p[i + 1], n);
+      for (let j = 0; j < p_sub.length - 1; j++) {
+        t = t + moistLapse(p_sub[j], t) * (p_sub[j + 1] - p_sub[j]);
+      }
+    } else {
+      t = t + moistLapse(p[i], t) * (p[i + 1] - p[i]);
+
+    }
+    results.push([p[i + 1], t]);
+
+    let temp = t+35*Math.log(1000/p[i + 1])
+    point = [temp, p[i + 1]]
+    points.push(point)
+  }
+  return points;
+};
+
 
 export const generateSaturationMixingRatioLine = (p:any, w0:number) => {
   w0= w0/1000;
@@ -76,7 +139,7 @@ const dewpoint_from_e = (p:any, e:any) => {
 // Others function to Scew-T chart,now it isnt working
 /**TODO check this functions **/
 
-function generateWetAdiabatFunction(t: number, p: number): number {
+export function generateWetAdiabatFunction(t: number, p: number): number {
 
 
   t = t + 273;
@@ -88,7 +151,7 @@ function generateWetAdiabatFunction(t: number, p: number): number {
   let tq = 253.16
   let d = 120
   let TSA = 0;
-  for (let i = 0; i < 13; i++) {
+  for (let i = 0; i <= 13; i++) {
 
     d = d / 2
     let x = a * Math.exp(-2.6518986 * W(tq, p) / tq) - tq * Math.pow((1000 / p), 0.288)
@@ -303,3 +366,42 @@ const moistLapse = (p: number, t: number) => {
 const mixingRatio = (p: number, e: number) => (epsilon * e) / (p - e);
 const saturationVaporPressure = (t: number) =>
   611.2 * Math.exp((17.67 * (t - 273.15)) / (t - 29.65));
+
+
+
+export function calcTempSatAdiabat( os:any, pres:any) {
+  let tq = 253.15;
+  let d = 120.0;
+  let x = 0.0;
+  for (let i = 0; i < 13; i++) {
+    d = d / 2.0;
+    x = os * Math.exp(-2.6518986 * w(tq, pres) / tq)
+      - tq * Math.pow((100000.0 / pres), (2.0 / 7.0));
+    if (Math.abs(x) < 0.01) {
+      break;
+    } else {
+      d = SIGN(d, x);
+      tq += d;
+    }
+  }
+  return tq;
+}
+
+export function w(temp:any, pres:any) {
+  let result = 0;
+
+  pres = pres / 100.0; // Convert Pa to hPa
+
+  if (temp < 999) {
+    let x = esat(temp) / 100; // Convert sat. pres. from Pa to hPa
+    result = 621.97 * x / (pres - x);
+  }
+  return result;
+}
+
+export function esat(temp:any) {
+  temp -= 273.15;
+  let result = 6.1078 * Math.exp((17.2693882 * temp) / (temp + 237.3));
+  result = result * 100.0; // Convert hPa to Pa
+  return result;
+}
