@@ -4,26 +4,22 @@ import {
   generateMoistAdiabaticSkewTLine,
   generateThermoLines,
 } from "../../../../common/utils";
-import {helperLines, pointTO} from "../../../modal/modal";
 import {Observable} from "rxjs";
+import {AbstractDiagram} from "../../abstract-diagram/abstractDiagram";
 
 @Component({
   selector: 'app-diagram-skew-t',
   templateUrl: './diagram-skew-t.component.html',
   styleUrls: ['./diagram-skew-t.component.scss']
 })
-export class DiagramSkewTComponent implements OnInit {
+export class DiagramSkewTComponent extends AbstractDiagram implements OnInit {
 
   @Input() HighChart: any
   @Input() mappedChartDataSkewT$?: Observable<any>;
   updateFlag = false;
-  actualObservationTemperature?: pointTO[]
-  actualObservationDewTemperature?: pointTO[]
-  rage: number[] = [1100, 1000, 900, 800, 700, 600, 500, 400, 300, 200, 100]
-
   constructor() {
+    super();
   }
-
   skewT: any
 
   ngOnInit(): void {
@@ -42,7 +38,7 @@ export class DiagramSkewTComponent implements OnInit {
 
     let obj = this.generateLineOnChart('Moist adiabatic', '#2f7ed8')
     this.skewT.series.push(obj)
-    for (let i = -84; i < 55; i += 10) {
+    for (let i = -80; i < 90; i += 10) {
       let obj = this.generateLineOnChart('Moist adiabatic', '#2f7ed8',
         generateMoistAdiabaticSkewTLine(this.rage, i), ':previous')
       this.skewT.series.push(obj)
@@ -60,110 +56,23 @@ export class DiagramSkewTComponent implements OnInit {
     }
   }
 
-  private generateLineOnChart(name: string, color: string, data?: any, linkedTo?: string) {
-    let lineObject = new helperLines
-    lineObject.name = name
-    lineObject.color = color
-    lineObject.data = data
-    lineObject.linkedTo = linkedTo
-    return lineObject
-  }
-
   private initChart() {
-    this.skewT = {
-      subtitle: {
-        text: 'Skew-T Chart',
-        align: 'left'
-      },
-      series: [{
-        point: {},
-        color: '#e56610',
-        name: 'Thermo data',
-      }],
-
-      xAxis: {
-        gridLineWidth: 1,
-        tickInterval: 5,
-        plotLines: [{
-          color: 'red',
-          dashStyle: 'longdashdot',
-          value: 0,
-          width: 2,
-          shadow: true
-        }],
-        title: {
-          text: 'Temperature',
-        },
-        min: -80,
-        max: 80
-      },
-      yAxis: {
-        labels: {
-          format: '{value} hPa',
-          style: {}
-        },
-        title: {
-          text: 'Pressure ',
-        },
-        gridLineWidth: 1,
-        type: 'logarithmic',
-        reversed: true,
-        min: 100,
-        max: 900
-
-      },
-      plotOptions: {
-        states: {
-          hover: {enabled: false}
-        },
-        series: {},
-        column: {
-          stacking: "normal",
-          minPointLength: 2
-        },
-        line: {}
-      },
-      chart: {
-        type: 'line',
-      },
-      title: {
-        text: 'Upper air sounding chart',
-      },
-    };
+    this.skewT = this.getChart("Skew-T Chart")
   }
 
   drawFunction() {
-    const chartObject = {
-      color: '#e56610',
-      type: 'scatter',
-      marker: {
-        enabled: false
-      },
-      data: this.actualObservationTemperature,
-      pointStart: 900,
-      pointInterval: 1550123,
-      zIndex: 1,
-      lineWidth: 6,
-      dragDrop: {
-        draggableY: false,
-        draggableX: true
-      },
-      name: 'Thermo data'
-    };
-    this.drawNormalFunction(chartObject)
-    this.drawMoistFunction(chartObject)
+    this.drawNormalFunction()
+    this.drawMoistFunction()
     this.updateFlag = true;
   }
 
-  drawNormalFunction(chartObject: any) {
+  drawNormalFunction() {
+    const chartObject = this.getThermoChartModel(this.actualObservationTemperature)
     this.skewT.series[0] = chartObject
   }
 
-  drawMoistFunction(chartObject: any) {
-    const newChart = {...chartObject}
-    newChart.color = '#104ce5';
-    newChart.data = this.actualObservationDewTemperature
-    newChart.name = 'Dew point function';
+  drawMoistFunction() {
+    const newChart = this.getMoistAdiabatChartModel(this.actualObservationDewTemperature)
     this.skewT.series[1] = newChart
   }
 

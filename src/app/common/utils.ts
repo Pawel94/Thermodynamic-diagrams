@@ -1,16 +1,3 @@
-export function generateLinearFunction(a: number, b: number): number[][] {
-  const points: number[][] = [];
-  let point: number[];
-
-  const rage = generateRage(-80, 45)
-  rage.forEach(x => {
-    point = [x, a * x + b]
-    if (a * x + b < 1010) points.push(point)
-
-  })
-  return points
-}
-
 export function generateThermoLines(temper: number): number[][] {
   const points: number[][] = [];
   let point: number[];
@@ -40,7 +27,7 @@ export function generateDryAdiabatFunctionForSkewT(temper: number): number[][] {
   })
   return points
 }
-export function generateDryAdiabatFunction(temper: number): number[][] {
+export function generateDryAdiabatFunctionForEmagram(temper: number): number[][] {
   const points: number[][] = [];
   let point: number[];
   const pressureRage = generateRage(0, 1050)
@@ -88,10 +75,9 @@ export const generateMoistAdiabaticEmagramLine = (p: any, t0: any) => {
 };
 
 export const generateMoistAdiabaticSkewTLine = (p: any, t0: any) => {
-  const points: number[][] = [];
+  const points: number[][] = [[t0,p[0]]];
   let point: number[];
   let results = [[p[0], t0]];
-
   let t = t0;
 
   for (let i = 0; i < p.length - 1; i++) {
@@ -111,13 +97,13 @@ export const generateMoistAdiabaticSkewTLine = (p: any, t0: any) => {
 
     }
     results.push([p[i + 1], t]);
-
     let temp = t+35*Math.log(1000/p[i + 1])
     point = [temp, p[i + 1]]
     points.push(point)
   }
   return points;
 };
+
 
 
 export const generateSaturationMixingRatioLine = (p:any, w0:number) => {
@@ -369,39 +355,6 @@ const saturationVaporPressure = (t: number) =>
 
 
 
-export function calcTempSatAdiabat( os:any, pres:any) {
-  let tq = 253.15;
-  let d = 120.0;
-  let x = 0.0;
-  for (let i = 0; i < 13; i++) {
-    d = d / 2.0;
-    x = os * Math.exp(-2.6518986 * w(tq, pres) / tq)
-      - tq * Math.pow((100000.0 / pres), (2.0 / 7.0));
-    if (Math.abs(x) < 0.01) {
-      break;
-    } else {
-      d = SIGN(d, x);
-      tq += d;
-    }
-  }
-  return tq;
-}
 
-export function w(temp:any, pres:any) {
-  let result = 0;
 
-  pres = pres / 100.0; // Convert Pa to hPa
 
-  if (temp < 999) {
-    let x = esat(temp) / 100; // Convert sat. pres. from Pa to hPa
-    result = 621.97 * x / (pres - x);
-  }
-  return result;
-}
-
-export function esat(temp:any) {
-  temp -= 273.15;
-  let result = 6.1078 * Math.exp((17.2693882 * temp) / (temp + 237.3));
-  result = result * 100.0; // Convert hPa to Pa
-  return result;
-}

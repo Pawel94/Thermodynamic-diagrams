@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
-import {measuredData, pointTO, sharedObservationData} from "../../../../diagram-chart/modal/modal";
+import {measuredData, sharedObservationData} from "../../../../diagram-chart/modal/modal";
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +23,8 @@ export class ThermodataService {
 
   setActualTermoData(data: any) {
     const createdShareDataObject = {
-      mappedDataToChart: this.mapDataToPointsOnChart(data.mappedDataToChart),
-      mappedDataToSkewTChart: this.mapDataToPointsOnSkewTChart(data.mappedDataToChart),
+      mappedDataToChart: this.mapDataToChartDiagram(data.mappedDataToChart, false),
+      mappedDataToSkewTChart: this.mapDataToChartDiagram(data.mappedDataToChart, true),
       extraData: data.properties,
       actualData: data.mappedDataToChart
     }
@@ -45,23 +45,27 @@ export class ThermodataService {
   }
 
   setActualDataFromTable(data: any) {
-    let mappedData = this.mapDataToPointsOnChart(data)
+    let mappedData = this.mapDataToChartDiagram(data, false)
+    let mappedDataSkewT = this.mapDataToChartDiagram(data, true)
     this.mappedDataToDiagram.next(mappedData);
+    this.mappedDataToSkewTDiagram.next(mappedDataSkewT);
   }
 
-  private mapDataToPointsOnChart(data: measuredData[]) {
+
+  private mapDataToChartDiagram(data: measuredData[], isSkewT?: boolean) {
     let listOfPointsTemperature: any[] = []
     let listOfPointsDewTemperature: any[] = []
+    console.log(data)
     data.map(element => {
       if (element.pressure > 100) {
         listOfPointsTemperature.push({
-          x: Number(element.temp).toFixed(2),
+          x: isSkewT ? this.castTemperatureToSkewT(element.temp,element.pressure) : Number(element.temp).toFixed(2),
           y: element.pressure,
           color: 'black',
           marker: {enabled: element.showMarker}
         })
         listOfPointsDewTemperature.push({
-          x: Number(element.dewpoint).toFixed(2),
+          x: isSkewT ? this.castTemperatureToSkewT(element.dewpoint,element.pressure) : Number(element.dewpoint).toFixed(2),
           y: element.pressure,
           color: 'orange',
           marker: {enabled: element.showMarkerDew}
@@ -71,25 +75,7 @@ export class ThermodataService {
     return {listOfPointsTemperature, listOfPointsDewTemperature}
   }
 
-  private mapDataToPointsOnSkewTChart(data: measuredData[]) {
-    let listOfPointsTemperature: any[] = []
-    let listOfPointsDewTemperature: any[] = []
-    data.map(element => {
-      if (element.pressure > 100) {
-        listOfPointsTemperature.push({
-          x: (element.temp + 35 * Math.log(1000 / element.pressure)).toFixed(2),
-          y: element.pressure,
-          color: 'black',
-          marker: {enabled: element.showMarker}
-        })
-        listOfPointsDewTemperature.push({
-          x: (element.dewpoint + 35 * Math.log(1000 / element.pressure)).toFixed(2),
-          y: element.pressure,
-          color: 'orange',
-          marker: {enabled: element.showMarkerDew}
-        })
-      }
-    })
-    return {listOfPointsTemperature, listOfPointsDewTemperature}
+  private castTemperatureToSkewT(temperature: number,pressue:number) {
+    return (Number(temperature) + 35 * Math.log(1000 / pressue)).toFixed(2)
   }
 }

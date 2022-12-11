@@ -1,21 +1,11 @@
-<button class="btn btn-danger" (click)="changeChart()"> Change!</button>
-<div *ngIf="!chartFlag">
 <highcharts-chart
-  [Highcharts]="Highcharts"
-  [options]="linechart"
+  [Highcharts]="HighChart"
+  [options]="emagramChart"
   (click)="detectClick()"
   [(update)]="updateFlag"
     style="width: 100%; height: 1000px; display: block;"
 >
 </highcharts-chart>
-</div>
-<div *ngIf="chartFlag">
-  <app-diagram-skew-t
-    [HighChart] ="Highcharts"
-    [mappedChartDataSkewT$]="mappedChartSkewTData$"
-  >
-  </app-diagram-skew-t>
-</div>
 
 
 

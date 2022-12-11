@@ -1,12 +1,31 @@
 <div class="container">
   <div class="row">
-    <div ><app-diagram
-      [mappedChartData$]="mappedDataToDiagram$"
-      [mappedChartSkewTData$]="mappedDataToSkewTDiagram$"
-      (newChartData)="updateDataFromChart($event)"
-    ></app-diagram></div>
-    <div ></div>
+
+        <div @fade *ngIf="isViewEmagram()">
+          <app-diagram
+            [mappedChartData$]="mappedDataToDiagram$"
+            [mappedChartSkewTData$]="mappedDataToSkewTDiagram$"
+            (newChartData)="updateDataFromChart($event)"
+            [HighChart]="Highcharts"
+
+          ></app-diagram>
+        </div>
+        <div @fade *ngIf="isViewSkewT()">
+          <app-diagram-skew-t
+            [HighChart]="Highcharts"
+            [mappedChartDataSkewT$]="mappedDataToSkewTDiagram$"
+          >
+          </app-diagram-skew-t>
+        </div>
+      </div>
+
+  <div class="row">
+<!--    <div class="card m-2">-->
+<!--      <div class="card-body">-->
+        <app-manager-container></app-manager-container>
+<!--      </div>-->
+<!--    </div>-->
+
   </div>
-    <div class="row"><app-manager-container></app-manager-container></div>
 </div>
 

@@ -8,7 +8,6 @@ import {DiagramComponent} from './diagram-chart/components/diagram/diagram/diagr
 import {DiagramContainerComponent} from "./diagram-chart/components/diagram-container/diagram-container.component";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {ToolbarComponent} from './common/component/toolbar/toolbar.component';
 import {ManagerContainerComponent} from './manager/components/manager-container/manager-container.component';
 import {ThermodataComponent} from './manager/components/thermodata/thermodata/thermodata.component';
 import {HttpClientModule} from "@angular/common/http";
@@ -19,13 +18,13 @@ import { StationSearchModelComponent } from './stationManager/station-search-mod
 import {ReactiveFormsModule} from "@angular/forms";
 import { InfoModalComponent } from './common/component/info-modal/info-modal.component';
 import { DiagramSkewTComponent } from './diagram-chart/components/diagram/diagram-skew-t/diagram-skew-t.component';
+import { SidebarComponent } from './common/component/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DiagramContainerComponent,
     DiagramComponent,
-    ToolbarComponent,
     ManagerContainerComponent,
     ThermodataComponent,
     BtnCellShowComponent,
@@ -33,6 +32,8 @@ import { DiagramSkewTComponent } from './diagram-chart/components/diagram/diagra
     StationSearchModelComponent,
     InfoModalComponent,
     DiagramSkewTComponent,
+    SidebarComponent,
+
   ],
     imports: [
         BrowserModule,
