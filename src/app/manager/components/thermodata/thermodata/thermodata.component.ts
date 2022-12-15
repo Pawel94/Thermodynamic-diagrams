@@ -196,4 +196,5 @@ export class ThermodataComponent implements OnInit {
     this.thermoDataService.setActualDataFromTable(this.actualRowData)
     this.thermoDataService.setActualDataToTable(this.actualRowData)
   }
+
 }

@@ -4,6 +4,7 @@
         <div @fade *ngIf="isViewEmagram()">
           <app-diagram
             [mappedChartData$]="mappedDataToDiagram$"
+            [isZoom]="isZoomed"
             [mappedChartSkewTData$]="mappedDataToSkewTDiagram$"
             (newChartData)="updateDataFromChart($event)"
             [HighChart]="Highcharts"
@@ -12,19 +13,20 @@
         </div>
         <div @fade *ngIf="isViewSkewT()">
           <app-diagram-skew-t
+            [isZoom]="isZoomed"
             [HighChart]="Highcharts"
             [mappedChartDataSkewT$]="mappedDataToSkewTDiagram$"
           >
           </app-diagram-skew-t>
         </div>
+    <div class="row">
+    </div>
       </div>
 
+
   <div class="row">
-<!--    <div class="card m-2">-->
-<!--      <div class="card-body">-->
+
         <app-manager-container></app-manager-container>
-<!--      </div>-->
-<!--    </div>-->
 
   </div>
 </div>

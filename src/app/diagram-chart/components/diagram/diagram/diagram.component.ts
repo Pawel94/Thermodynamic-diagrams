@@ -4,7 +4,7 @@ import {
   generateMoistAdiabaticEmagramLine,
   generateSaturationMixingRatioLine,
 } from "../../../../common/utils";
-import {Observable} from "rxjs";
+import {combineLatest, Observable} from "rxjs";
 import {AbstractDiagram} from "../../abstract-diagram/abstractDiagram";
 
 
@@ -15,7 +15,9 @@ import {AbstractDiagram} from "../../abstract-diagram/abstractDiagram";
 })
 export class DiagramComponent extends AbstractDiagram implements OnInit {
   updateFlag = false;
+
   @Input() mappedChartData$?: Observable<any>;
+  @Input() isZoom?: Observable<boolean>;
   @Input() mappedChartSkewTData$?: Observable<any>
   @Output() newChartData = new EventEmitter<any>();
   rage2: number[] = [1100, 1000, 900, 800, 700, 600, 500, 400, 300, 200, 100]
@@ -26,9 +28,10 @@ export class DiagramComponent extends AbstractDiagram implements OnInit {
 
 
   ngOnInit(): void {
-    this.mappedChartData$?.subscribe(chartData => {
-        this.actualObservationTemperature = chartData.listOfPointsTemperature
-        this.actualObservationDewTemperature = chartData.listOfPointsDewTemperature
+    combineLatest([this.mappedChartData$, this.isZoom]).subscribe((chartData: any) => {
+        this.zoomFlag = chartData[1];
+        this.actualObservationTemperature = chartData[0]?.listOfPointsTemperature
+        this.actualObservationDewTemperature = chartData[0]?.listOfPointsDewTemperature
         this.initChart()
         this.drawFunction()
         this.addDryAdiabatsLines()
@@ -105,11 +108,13 @@ export class DiagramComponent extends AbstractDiagram implements OnInit {
 
   drawNormalFunction() {
     const chartObject = this.getThermoChartModel(this.actualObservationTemperature)
+    chartObject.dragDrop = {draggableY: false, draggableX: !this.zoomFlag};
     this.emagramChart.series[0] = chartObject
   }
 
   drawMoistFunction() {
     const newChart = this.getMoistAdiabatChartModel(this.actualObservationDewTemperature)
+    newChart.dragDrop = {draggableY: false, draggableX: !this.zoomFlag};
     this.emagramChart.series[1] = newChart
   }
 

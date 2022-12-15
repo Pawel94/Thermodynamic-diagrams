@@ -4,7 +4,7 @@ import {
   generateMoistAdiabaticSkewTLine,
   generateThermoLines,
 } from "../../../../common/utils";
-import {Observable} from "rxjs";
+import {combineLatest, Observable} from "rxjs";
 import {AbstractDiagram} from "../../abstract-diagram/abstractDiagram";
 
 @Component({
@@ -16,16 +16,20 @@ export class DiagramSkewTComponent extends AbstractDiagram implements OnInit {
 
   @Input() HighChart: any
   @Input() mappedChartDataSkewT$?: Observable<any>;
+  @Input() isZoom?: Observable<boolean>;
   updateFlag = false;
+
   constructor() {
     super();
   }
+
   skewT: any
 
   ngOnInit(): void {
-    this.mappedChartDataSkewT$?.subscribe(chartData => {
-      this.actualObservationTemperature = chartData.listOfPointsTemperature
-      this.actualObservationDewTemperature = chartData.listOfPointsDewTemperature
+    combineLatest([this.mappedChartDataSkewT$, this.isZoom]).subscribe((data: any) => {
+      this.zoomFlag = data[1]
+      this.actualObservationTemperature = data[0]?.listOfPointsTemperature
+      this.actualObservationDewTemperature = data[0]?.listOfPointsDewTemperature
       this.initChart()
       this.drawFunction()
       this.addThermoLines()
@@ -68,11 +72,13 @@ export class DiagramSkewTComponent extends AbstractDiagram implements OnInit {
 
   drawNormalFunction() {
     const chartObject = this.getThermoChartModel(this.actualObservationTemperature)
+    chartObject.dragDrop = {draggableY: false, draggableX: !this.zoomFlag};
     this.skewT.series[0] = chartObject
   }
 
   drawMoistFunction() {
     const newChart = this.getMoistAdiabatChartModel(this.actualObservationDewTemperature)
+    newChart.dragDrop = {draggableY: false, draggableX: !this.zoomFlag};
     this.skewT.series[1] = newChart
   }
 

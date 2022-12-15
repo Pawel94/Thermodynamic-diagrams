@@ -13,21 +13,28 @@
 
 
   <ul class="nav nav-pills flex-column mb-auto text-center">
-    <li class="p-2 hover-dim ">
+    <li class="p-1 hover-dim ">
       <p (click)="openModal() "><i class="bi bi-database-fill-add">
         Get data for new station</i></p>
     </li>
-    <li class="p-2 hover-dim active ">
+    <li class="p-1 hover-dim active ">
       <p class="active"
         (click)="setView('SkewT')"><i class="bi bi-graph-up">
         Open Skew-T</i></p>
     </li>
-    <li class="p-2 hover-dim">
+    <li class="p-1 hover-dim">
       <p
         (click)="setView('Emagram')"><i class="bi bi-graph-up">
         Open Emagram</i></p>
     </li>
-    <li class="p-2 hover-dim">
+    <li class="p-1 hover-dim" (click)="activateZoomingChart()">
+      <p>
+        <i *ngIf="zoomFlag" class="bi bi-patch-check-fill" style="color: #64eda4;">  Zoom chart</i>
+        <i *ngIf="!zoomFlag"class="bi bi-patch-minus-fill" style="color: #a80505;">  Zoom chart</i>
+      </p>
+    </li>
+
+    <li class="p-1 hover-dim">
       <p (click)="openInfoModal()">
         <i class="bi bi-info-square"> Project Info</i>
       </p>

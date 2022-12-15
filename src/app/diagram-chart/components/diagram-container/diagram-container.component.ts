@@ -5,6 +5,7 @@ import {DiagramService} from "../../services/diagram.service";
 import * as Highcharts from "highcharts";
 import {ChartViewService} from "../../../common/services/share-services/chart-view/chart-view.service";
 import {animate, style, transition, trigger} from "@angular/animations";
+import {ZoomChartService} from "../../../common/services/share-services/zoom-chart/zoom-chart.service";
 
 const Draggable = require("highcharts/modules/draggable-points.js");
 Draggable(Highcharts);
@@ -18,12 +19,12 @@ Exporting(Highcharts);
   animations: [
     trigger('fade', [
       transition(':enter', [
-        style({ opacity: 0 }),
-        animate(1500, style({ opacity: 1}))
+        style({opacity: 0}),
+        animate(1500, style({opacity: 1}))
       ]),
       transition(':leave', [
-        style({ opacity: 1 }),
-        animate(200, style({ opacity: 0 }))
+        style({opacity: 1}),
+        animate(200, style({opacity: 0}))
       ])
     ])
   ]
@@ -31,6 +32,7 @@ Exporting(Highcharts);
 })
 export class DiagramContainerComponent implements OnInit {
   mappedDataToDiagram$: Observable<any> = this.thermoDataService.mappedDataToDiagram$
+  isZoomed: Observable<any> = this.zoom.zoomChartState$;
   mappedDataToSkewTDiagram$: Observable<any> = this.thermoDataService.mappedDataToSkewTDiagram$
   Highcharts: typeof Highcharts = Highcharts;
   dataToChart$: Observable<any> = this.diagramService.getActualData()
@@ -38,7 +40,9 @@ export class DiagramContainerComponent implements OnInit {
   private chartViewName?: string;
 
   constructor(private readonly thermoDataService: ThermodataService,
-              private readonly diagramService: DiagramService, private readonly chartViewDataService: ChartViewService) {
+              private readonly diagramService: DiagramService,
+              private readonly chartViewDataService: ChartViewService,
+              private readonly zoom: ZoomChartService) {
   }
 
   ngOnInit(): void {

@@ -6,6 +6,7 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {InfoModalComponent} from "../info-modal/info-modal.component";
 import {ChartViewService} from "../../services/share-services/chart-view/chart-view.service";
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import {ZoomChartService} from "../../services/share-services/zoom-chart/zoom-chart.service";
 
 @Component({
   selector: 'app-sidebar',
@@ -13,8 +14,8 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
   styleUrls: ['./sidebar.component.scss'],
   animations: [
     trigger('menuOptionsBackground', [
-      state('DEFAULT', style({ backgroundColor: 'transparent' })),
-      state('ACTIVE', style({ backgroundColor: '#93C5FE' })),
+      state('DEFAULT', style({backgroundColor: 'transparent'})),
+      state('ACTIVE', style({backgroundColor: '#93C5FE'})),
       transition('* => *', animate('0.3s ease-in-out')),
     ]),
   ],
@@ -23,8 +24,12 @@ export class SidebarComponent implements OnInit {
   @Input() isExpanded: boolean = false;
   @Output() toggleSidebar: EventEmitter<boolean> = new EventEmitter<boolean>();
   dataProperties?: properties
+  public zoomFlag: boolean = false;
 
-  constructor(private readonly thermoService: ThermodataService, private readonly chartViewDataService:ChartViewService,public readonly modalService: NgbModal) {
+  constructor(private readonly thermoService: ThermodataService,
+              private readonly chartViewDataService: ChartViewService,
+              public readonly modalService: NgbModal,
+              private readonly zoomService: ZoomChartService) {
   }
 
   ngOnInit(): void {
@@ -40,9 +45,10 @@ export class SidebarComponent implements OnInit {
     return this.dataProperties?.gts_topic.split('/')[1].toUpperCase() + ' ' + this.dataProperties?.station_id
   }
 
-  setView(view:string){
+  setView(view: string) {
     this.chartViewDataService.setActualViewChart(view)
   }
+
   openModal() {
     const modalRef = this.modalService.open(StationSearchModelComponent);
     modalRef.result.then((result) => {
@@ -59,5 +65,10 @@ export class SidebarComponent implements OnInit {
     }).catch((error) => {
       console.log(error);
     });
+  }
+
+  activateZoomingChart() {
+    this.zoomFlag = !this.zoomFlag
+    this.zoomService.setZoomChartState(this.zoomFlag);
   }
 }

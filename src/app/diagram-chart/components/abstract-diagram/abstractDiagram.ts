@@ -4,6 +4,8 @@ export abstract class AbstractDiagram {
   rage: number[] = [1000, 900, 800, 700, 600, 500, 400, 300, 200, 100]
   actualObservationTemperature?: pointTO[]
   actualObservationDewTemperature?: pointTO[]
+  zoomFlag = false;
+
   public getChart(name: string) {
 
     return {
@@ -33,7 +35,6 @@ export abstract class AbstractDiagram {
         min: -80,
         max: 80
       },
-      zoomType: "xy",
       mapNavigation: {
         enableMouseWheelZoom: true
       },
@@ -65,6 +66,9 @@ export abstract class AbstractDiagram {
       },
       chart: {
         type: 'line',
+        zoomType: 'xy',
+        panning: true,
+        panKey: 'shift'
       },
       title: {
         text: `Upper air sounding chart - ${name}`,
@@ -123,4 +127,5 @@ export abstract class AbstractDiagram {
     };
 
   }
+
 }

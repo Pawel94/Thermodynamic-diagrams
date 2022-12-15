@@ -55,17 +55,16 @@ export class ThermodataService {
   private mapDataToChartDiagram(data: measuredData[], isSkewT?: boolean) {
     let listOfPointsTemperature: any[] = []
     let listOfPointsDewTemperature: any[] = []
-    console.log(data)
     data.map(element => {
       if (element.pressure > 100) {
         listOfPointsTemperature.push({
-          x: isSkewT ? this.castTemperatureToSkewT(element.temp,element.pressure) : Number(element.temp).toFixed(2),
+          x: isSkewT ? this.castTemperatureToSkewT(element.temp, element.pressure) : Number(element.temp).toFixed(2),
           y: element.pressure,
           color: 'black',
           marker: {enabled: element.showMarker}
         })
         listOfPointsDewTemperature.push({
-          x: isSkewT ? this.castTemperatureToSkewT(element.dewpoint,element.pressure) : Number(element.dewpoint).toFixed(2),
+          x: isSkewT ? this.castTemperatureToSkewT(element.dewpoint, element.pressure) : Number(element.dewpoint).toFixed(2),
           y: element.pressure,
           color: 'orange',
           marker: {enabled: element.showMarkerDew}
@@ -75,7 +74,7 @@ export class ThermodataService {
     return {listOfPointsTemperature, listOfPointsDewTemperature}
   }
 
-  private castTemperatureToSkewT(temperature: number,pressue:number) {
+  private castTemperatureToSkewT(temperature: number, pressue: number) {
     return (Number(temperature) + 35 * Math.log(1000 / pressue)).toFixed(2)
   }
 }
