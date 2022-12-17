@@ -23,6 +23,8 @@ import {ZoomChartService} from "../../services/share-services/zoom-chart/zoom-ch
 export class SidebarComponent implements OnInit {
   @Input() isExpanded: boolean = false;
   @Output() toggleSidebar: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  chartOption$?:string
   dataProperties?: properties
   public zoomFlag: boolean = false;
 
@@ -34,7 +36,7 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void {
     this.thermoService.stationData$.subscribe(data => this.dataProperties = data)
-
+    this.chartViewDataService.actualChartName$.subscribe(data => this.chartOption$=data)
   }
 
   getDataFromStation() {
@@ -70,5 +72,13 @@ export class SidebarComponent implements OnInit {
   activateZoomingChart() {
     this.zoomFlag = !this.zoomFlag
     this.zoomService.setZoomChartState(this.zoomFlag);
+  }
+
+  isViewSkewT() {
+    return this.chartOption$ === "SkewT"
+  }
+
+  isViewEmagram() {
+    return this.chartOption$ === "Emagram"
   }
 }

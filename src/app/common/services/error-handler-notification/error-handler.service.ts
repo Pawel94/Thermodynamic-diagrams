@@ -4,6 +4,7 @@ import {Subject} from "rxjs";
 export interface errorBody {
   error?: string,
   message?: string
+  name?:string
 }
 
 @Injectable({
@@ -16,12 +17,12 @@ export class ErrorHandlerService {
   private errorMessageSubject = new Subject<string>();
   errorMessageSubject$ = this.errorMessageSubject.asObservable();
   messageErrorForm = '[Error occured]: ';
-  messageDetails = '[Details]: ';
+  messageDetails = 'Details: ';
 
   setErrorMessage(message?: string, errorBody?: errorBody) {
     if (message !== '') {
-      message = this.messageErrorForm + message + this.messageDetails +
-        errorBody?.error
+      message = this.messageErrorForm + message + '\n'+ this.messageDetails +
+        errorBody?.name +  '\n'+ errorBody?.message
     }
     this.errorMessageSubject.next(message);
   }

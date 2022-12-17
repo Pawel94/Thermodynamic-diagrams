@@ -1,0 +1,11 @@
+.hover-dim {
+  opacity: 1;
+
+  &:hover {
+    opacity: 0.5;
+    transition: opacity 0.2s ease-in-out;
+    background-color: #74b999;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+}

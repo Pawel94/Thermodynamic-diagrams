@@ -3,47 +3,44 @@
   <div class="text-center">
     <h2>Meteo Chart</h2>
     <hr>
-    <p>Actual date:</p>
+    <div class="divider">Current date</div>
     <p style="color:#74b999;">  {{getDataFromStation()}}</p>
-    <hr>
-    <p>Actual station:</p>
+    <div class="divider">Current station</div>
     <p style="color:#74b999;"> {{getStationName()}}</p>
   </div>
-  <hr>
-
-
-  <ul class="nav nav-pills flex-column mb-auto text-center">
-    <li class="p-1 hover-dim " (click)="openModal() ">
-      <p><i class="bi bi-database-fill-add">
-        Load new data</i></p>
-    </li>
-    <li class="p-1 hover-dim active " (click)="setView('SkewT')">
-      <p class="active"
+  <ul class="nav nav-pills flex-column text-center ">
+    <div class="divider">Choose chart</div>
+    <li class="m-1 hover-dim" [ngClass]="isViewSkewT() ? 'chartSet':'chartNotSet'" (click)="setView('SkewT')">
+      <p class=" m-1"
       ><i class="bi bi-graph-up">
         Open Skew-T</i></p>
     </li>
-    <li class="p-1 hover-dim" (click)="setView('Emagram')">
-      <p
+    <li class="m-1 hover-dim" [ngClass]="isViewEmagram() ? 'chartSet':'chartNotSet'" (click)="setView('Emagram')">
+      <p class=" m-1"
       ><i class="bi bi-graph-up">
         Open Emagram</i></p>
     </li>
-    <li class="p-1 hover-dim" (click)="activateZoomingChart()">
-      <p>
+    <div class="divider">Chart Options</div>
+    <li class="m-1 hover-dim" (click)="openModal() ">
+      <p class=" m-1"><i class="bi bi-database-fill-add">
+        Load new data</i></p>
+    </li>
+
+    <li class="m-1 hover-dim" (click)="activateZoomingChart()">
+      <p class=" m-1">
         <i *ngIf="zoomFlag" class="bi bi-patch-check-fill" style="color: #64eda4;"> Zoom chart</i>
         <i *ngIf="!zoomFlag" class="bi bi-patch-minus-fill" style="color: #a80505;"> Zoom chart</i>
       </p>
     </li>
-
-    <li class="p-1 hover-dim" (click)="openInfoModal()">
-      <p>
+    <hr>
+    <li class="m-1 hover-dim" (click)="openInfoModal()">
+      <p class=" m-1">
         <i class="bi bi-info-square"> Project Info</i>
       </p>
     </li>
-    <hr>
   </ul>
   <div class="text-center">
     <span class="pe-3" style="color:#e16e79;"><i class="bi bi-hammer"> V.1.3</i> </span>
-
   </div>
 </div>
 

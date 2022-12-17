@@ -10,18 +10,26 @@ export class SuccessHandlerService {
 
   private successMessageSubject = new Subject<string>();
   successMessageSubject$ = this.successMessageSubject.asObservable();
-  messageSuccesForm = 'Successfull: ';
+  messageSuccessForm = '[Successfull]: ';
+
+  messageStation = '[Station]: ';
+  messageDate = '[Date]: ';
 
   setSuccessMessage(message: string, body?: any) {
-    console.log(body);
     if (message !== '') {
-      message = this.messageSuccesForm + message + body;
+      message = this.messageSuccessForm + message + '\n' + this.messageStation + body.stationNummer +
+        '\n' + this.messageDate + this.parseDate(body.date);
     }
     this.successMessageSubject.next(message);
   }
 
   clearSuccessMessage() {
     this.setSuccessMessage('');
+  }
+
+  private parseDate(date: any) {
+    return `${date?.day}-${date?.month}-${date?.year}`
+
   }
 
 }

@@ -6,6 +6,8 @@ export abstract class AbstractDiagram {
   actualObservationDewTemperature?: pointTO[]
   zoomFlag = false;
 
+  constructor() {
+  }
   public getChart(name: string) {
 
     return {

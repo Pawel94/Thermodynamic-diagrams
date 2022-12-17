@@ -29,7 +29,7 @@ export class DiagramService {
             mappedDataToChart: this.measuredData(element.features)
           }
         }),
-        tap(x => this.successNotification.setSuccessMessage("Added successfully station: ",stationNummer))
+        tap(x => this.successNotification.setSuccessMessage("Loaded data", {stationNummer, date}))
       )
   }
 

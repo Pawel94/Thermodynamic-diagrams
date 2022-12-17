@@ -16,3 +16,31 @@
   height: 100%;
 
 }
+.chartSet{
+  border-radius: 10px;
+  background-color: #74b999;
+}
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 10px 0px 10px 0px;
+  color: #736a6a;
+}
+
+.divider::after,
+.divider::before {
+  content: "";
+  border: 1px solid #595252;
+  color:#595252 ;
+  flex: 1;
+}
+
+/* Space on left and right sides of text */
+.divider:not(:empty)::before {
+  margin-right: 0.25em;
+}
+
+.divider:not(:empty)::after {
+  margin-left: 0.25em;
+}
