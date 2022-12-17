@@ -43,6 +43,7 @@ export class StationSearchModelComponent implements OnInit {
     const station = this.searchForm.get("stationNummer")?.value
      this.diagramService.getActualData(date,station).subscribe(dataToChart => {
        this.thermoDataService.setActualTermoData(dataToChart)
+       this.closeModal()
      })
 
   }

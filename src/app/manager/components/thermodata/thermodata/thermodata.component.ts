@@ -5,6 +5,7 @@ import {measuredData} from "../../../../diagram-chart/modal/modal";
 import {CellValueChangedEvent, ColDef, GridApi, GridReadyEvent, RowClassRules} from "ag-grid-community";
 import {BtnCellShowComponent} from "../btn-cell-show/btn-cell-show.component";
 import {BtnCellRemoveComponent} from "../btn-cell-remove/btn-cell-remove.component";
+import {BtnCellShowDewComponent} from "../btn-cell-show-dew/btn-cell-show-dew.component";
 
 @Component({
   selector: 'app-thermodata',
@@ -27,7 +28,7 @@ export class ThermodataComponent implements OnInit {
     },
     {
       headerName: 'Add point to chart - dew',
-      cellRenderer: BtnCellShowComponent,
+      cellRenderer: BtnCellShowDewComponent,
       width: 100,
       cellStyle: {textAlign: 'center'},
       cellRendererParams: {
@@ -41,7 +42,7 @@ export class ThermodataComponent implements OnInit {
       headerComponentParams: {template: '<i class="bi bi-trash"></i>'},
       cellRenderer: BtnCellRemoveComponent,
       cellStyle: {textAlign: 'center'},
-      width: 50,
+      width: 70,
       cellRendererParams: {
         clicked: (field: any) => {
           this.onRemoveButton(field)
@@ -72,30 +73,12 @@ export class ThermodataComponent implements OnInit {
       valueFormatter: (params: any) => params.data.dewpoint + " ºC",
       field: "dewpoint"
     },
-    {headerName: 'Height [m]', width: 150, cellStyle: {textAlign: 'center'}, field: "gpheight"},
-    {headerName: 'Wind  [m/s]', width: 150, cellStyle: {textAlign: 'center'}, field: "wind"},
-    {headerName: 'Wind direction', width: 150, cellStyle: {textAlign: 'center'}, field: "windDirection"},
-    {headerName: 'Wind u ', width: 150, cellStyle: {textAlign: 'center'}, field: "wind_u"},
-    {headerName: 'Wind v', width: 100, cellStyle: {textAlign: 'center'}, field: "wind_v"},
-    {
-      headerName: 'Show Point in temperature chart', cellStyle: {textAlign: 'center'}, field: "", width: 100,
-      cellRenderer: (params: any) => {
-        if (params.data.showMarker) {
-          return '<i class="bi bi-check-lg" style="color: forestgreen;"></i>';
-        }
-        return '<i class="bi bi-x" style="color: red;"></i>'
-      },
-    },
-    {
-      headerName: 'Show Point in dew temperature chart', field: "", width: 100,
-      cellStyle: {textAlign: 'center'},
-      cellRenderer: (params: any) => {
-        if (params.data.showMarkerDew) {
-          return '<i class="bi bi-check-lg" style="color: forestgreen;"></i>';
-        }
-        return '<i class="bi bi-x" style="color: red;"></i>'
-      },
-    }];
+    {headerName: 'Height [m]', width: 100, cellStyle: {textAlign: 'center'}, field: "gpheight"},
+    {headerName: 'Wind  [m/s]', width: 100, cellStyle: {textAlign: 'center'}, field: "wind"},
+    {headerName: 'Wind direction', width: 100, cellStyle: {textAlign: 'center'}, field: "windDirection"},
+    {headerName: 'Wind u ', width: 100, cellStyle: {textAlign: 'center'}, field: "wind_u"},
+    {headerName: 'Wind v', width: 100,cellStyle: {textAlign: 'center'}, field: "wind_v"},
+  ];
   public paginationPageSize = 60;
 
   dataToTable: Observable<measuredData[]> = this.thermoDataService.dataToTable$
@@ -105,7 +88,7 @@ export class ThermodataComponent implements OnInit {
   private actualRowData: any[] = [];
   public defaultColDef: ColDef = {
     resizable: true,
-    initialWidth: 200,
+
     wrapHeaderText: true,
     autoHeaderHeight: true,
     headerClass: 'text-center',

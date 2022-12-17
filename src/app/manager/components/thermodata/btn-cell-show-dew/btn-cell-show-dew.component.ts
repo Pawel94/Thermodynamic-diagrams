@@ -1,20 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {ICellRendererAngularComp} from "ag-grid-angular";
 
-
 @Component({
-  selector: 'app-btn-cell-show',
-  templateUrl: './btn-cell-show.component.html',
-  styleUrls: ['./btn-cell-show.component.scss']
+  selector: 'app-btn-cell-show-dew',
+  templateUrl: './btn-cell-show-dew.component.html',
+  styleUrls: ['./btn-cell-show-dew.component.scss']
 })
-export class BtnCellShowComponent implements ICellRendererAngularComp  {
+export class BtnCellShowDewComponent implements ICellRendererAngularComp {
+
   private params: any;
   public flag:boolean=false
   constructor() { }
 
   agInit(params: any): void {
     this.params = params;
-    this.flag =this.params.data?.showMarker
+    this.flag =this.params.data?.showMarkerDew
   }
 
   btnClickedHandler(event: any) {
@@ -24,4 +24,5 @@ export class BtnCellShowComponent implements ICellRendererAngularComp  {
   refresh() {
     return true;
   }
+
 }

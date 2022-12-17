@@ -1,0 +1,27 @@
+<div class="notification">
+  <div
+    class="alert alert-success"
+    role="alert"
+    *ngIf="successMessage$ | async as message"
+    @fade
+  >
+    {{ message }}
+  </div>
+  <div
+    class="alert alert-danger"
+    role="alert"
+    *ngIf="errorMessage$ | async as message"
+    @fade
+  >
+    {{ message }}
+  </div>
+
+  <div
+    class="alert alert-info"
+    role="alert"
+    *ngIf="infoMessage$ | async as message"
+    @fade
+  >
+    {{ message }}
+  </div>
+</div>

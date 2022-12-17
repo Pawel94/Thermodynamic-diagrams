@@ -1,0 +1,12 @@
+.hover-remove {
+  opacity: 1;
+  font-size: 12px;
+  color: #ad1d1d;
+  &:hover {
+    opacity: 0.5;
+    transition: opacity 0.2s ease-in-out;
+    font-size: 20px;
+    color: #ff0000;
+    cursor: pointer;
+  }
+}

@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {map, Observable, tap} from "rxjs";
 import {dataFromObservations, features, pointTO} from "../modal/modal";
+import {SuccessHandlerService} from "../../common/services/success-handler-notification/success-handler.service";
 
 
 @Injectable({
@@ -14,7 +15,7 @@ export class DiagramService {
   stationStartNumber: string | number = '12'
   stationEndNumber: string | number = '374'
 
-  constructor(private readonly http: HttpClient) {
+  constructor(private readonly http: HttpClient, private readonly successNotification: SuccessHandlerService) {
   }
 
   public getActualData(date?: any, stationNummer?: string): Observable<dataFromObservations> {
@@ -28,8 +29,8 @@ export class DiagramService {
             mappedDataToChart: this.measuredData(element.features)
           }
         }),
-        tap(x => {
-        }))
+        tap(x => this.successNotification.setSuccessMessage("Added successfully station: ",stationNummer))
+      )
   }
 
   private mapPoints(data: features[]): any {
@@ -54,7 +55,7 @@ export class DiagramService {
           new pointTO(element.properties.dewpoint, element.properties.pressure)
       }
       element.properties.wind = Math.sqrt(Math.pow(element.properties.wind_v, 2) + Math.pow(element.properties.wind_u, 2)).toFixed(2)
-      element.properties.windDirection = (Math.atan2(element.properties.wind_v, element.properties.wind_u)*57.2958).toFixed(0)
+      element.properties.windDirection = (Math.atan2(element.properties.wind_v, element.properties.wind_u) * 57.2958).toFixed(0)
     })
     let measuredData = data.map(x => x.properties);
     return measuredData

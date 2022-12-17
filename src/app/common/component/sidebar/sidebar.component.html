@@ -1,7 +1,7 @@
 <div class="stikedStyle d-flex flex-column flex-shrink-0 p-3 text-bg-dark"
      style="width:210px; height: 100%">
   <div class="text-center">
-    <h2 >Meteo Chart</h2>
+    <h2>Meteo Chart</h2>
     <hr>
     <p>Actual date:</p>
     <p style="color:#74b999;">  {{getDataFromStation()}}</p>
@@ -13,36 +13,36 @@
 
 
   <ul class="nav nav-pills flex-column mb-auto text-center">
-    <li class="p-1 hover-dim ">
-      <p (click)="openModal() "><i class="bi bi-database-fill-add">
-        Get data for new station</i></p>
+    <li class="p-1 hover-dim " (click)="openModal() ">
+      <p><i class="bi bi-database-fill-add">
+        Load new data</i></p>
     </li>
-    <li class="p-1 hover-dim active ">
+    <li class="p-1 hover-dim active " (click)="setView('SkewT')">
       <p class="active"
-        (click)="setView('SkewT')"><i class="bi bi-graph-up">
+      ><i class="bi bi-graph-up">
         Open Skew-T</i></p>
     </li>
-    <li class="p-1 hover-dim">
+    <li class="p-1 hover-dim" (click)="setView('Emagram')">
       <p
-        (click)="setView('Emagram')"><i class="bi bi-graph-up">
+      ><i class="bi bi-graph-up">
         Open Emagram</i></p>
     </li>
     <li class="p-1 hover-dim" (click)="activateZoomingChart()">
       <p>
-        <i *ngIf="zoomFlag" class="bi bi-patch-check-fill" style="color: #64eda4;">  Zoom chart</i>
-        <i *ngIf="!zoomFlag"class="bi bi-patch-minus-fill" style="color: #a80505;">  Zoom chart</i>
+        <i *ngIf="zoomFlag" class="bi bi-patch-check-fill" style="color: #64eda4;"> Zoom chart</i>
+        <i *ngIf="!zoomFlag" class="bi bi-patch-minus-fill" style="color: #a80505;"> Zoom chart</i>
       </p>
     </li>
 
-    <li class="p-1 hover-dim">
-      <p (click)="openInfoModal()">
+    <li class="p-1 hover-dim" (click)="openInfoModal()">
+      <p>
         <i class="bi bi-info-square"> Project Info</i>
       </p>
     </li>
-  <hr>
+    <hr>
   </ul>
   <div class="text-center">
-  <span class="pe-3" style="color:#e16e79;"><i class="bi bi-hammer"> V.1.3</i> </span>
+    <span class="pe-3" style="color:#e16e79;"><i class="bi bi-hammer"> V.1.3</i> </span>
 
   </div>
 </div>
