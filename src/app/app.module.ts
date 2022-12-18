@@ -22,6 +22,7 @@ import { SidebarComponent } from './common/component/sidebar/sidebar.component';
 import {ErrorInterceptor} from "./interceptors/error.interceptor";
 import { BtnCellShowDewComponent } from './manager/components/thermodata/btn-cell-show-dew/btn-cell-show-dew.component';
 import { NotifiactionComponent } from './common/component/notification/notifiaction/notifiaction.component';
+import { ChartOptionsComponent } from './manager/components/chart-options/chart-options.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { NotifiactionComponent } from './common/component/notification/notifiact
     SidebarComponent,
     BtnCellShowDewComponent,
     NotifiactionComponent,
+    ChartOptionsComponent,
 
 
   ],

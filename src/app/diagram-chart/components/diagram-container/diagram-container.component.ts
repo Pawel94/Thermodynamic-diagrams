@@ -6,6 +6,10 @@ import * as Highcharts from "highcharts";
 import {ChartViewService} from "../../../common/services/share-services/chart-view/chart-view.service";
 import {animate, style, transition, trigger} from "@angular/animations";
 import {ZoomChartService} from "../../../common/services/share-services/zoom-chart/zoom-chart.service";
+import {
+  chartAppearance,
+  ChartAppearanceService
+} from "../../../common/services/share-services/chart-apperance/chart-appearance.service";
 
 const Draggable = require("highcharts/modules/draggable-points.js");
 Draggable(Highcharts);
@@ -37,12 +41,14 @@ export class DiagramContainerComponent implements OnInit {
   Highcharts: typeof Highcharts = Highcharts;
   dataToChart$: Observable<any> = this.diagramService.getActualData()
   chartView$: Observable<string> = this.chartViewDataService.actualChartName$
+  chartAppearance$: Observable<chartAppearance> = this.chartAppearance.chartAppearance$
   private chartViewName?: string;
 
   constructor(private readonly thermoDataService: ThermodataService,
               private readonly diagramService: DiagramService,
               private readonly chartViewDataService: ChartViewService,
-              private readonly zoom: ZoomChartService) {
+              private readonly zoom: ZoomChartService,
+              private readonly chartAppearance: ChartAppearanceService) {
   }
 
   ngOnInit(): void {

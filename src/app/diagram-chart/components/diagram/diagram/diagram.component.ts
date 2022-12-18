@@ -6,6 +6,7 @@ import {
 } from "../../../../common/utils";
 import {combineLatest, Observable} from "rxjs";
 import {AbstractDiagram} from "../../abstract-diagram/abstractDiagram";
+import {chartAppearance} from "../../../../common/services/share-services/chart-apperance/chart-appearance.service";
 
 
 @Component({
@@ -19,6 +20,7 @@ export class DiagramComponent extends AbstractDiagram implements OnInit {
   @Input() mappedChartData$?: Observable<any>;
   @Input() isZoom?: Observable<boolean>;
   @Input() mappedChartSkewTData$?: Observable<any>
+  @Input() chartAppearance$?:Observable<chartAppearance>
   @Output() newChartData = new EventEmitter<any>();
   rage2: number[] = [1100, 1000, 900, 800, 700, 600, 500, 400, 300, 200, 100]
 
@@ -28,8 +30,10 @@ export class DiagramComponent extends AbstractDiagram implements OnInit {
 
 
   ngOnInit(): void {
-    combineLatest([this.mappedChartData$, this.isZoom]).subscribe((chartData: any) => {
+    combineLatest([this.mappedChartData$, this.isZoom,this.chartAppearance$]).subscribe((chartData: any) => {
         this.zoomFlag = chartData[1];
+        this.chartAppearance = chartData[2]
+      console.log(this.chartAppearance!.dryAdiabaticFunctionColor)
         this.actualObservationTemperature = chartData[0]?.listOfPointsTemperature
         this.actualObservationDewTemperature = chartData[0]?.listOfPointsDewTemperature
         this.initChart()
@@ -37,6 +41,7 @@ export class DiagramComponent extends AbstractDiagram implements OnInit {
         this.addDryAdiabatsLines()
         this.generateSaturationMixingRatioLines();
         this.addMoistAdiabatsLines()
+
       }
     )
 
@@ -48,11 +53,11 @@ export class DiagramComponent extends AbstractDiagram implements OnInit {
 
 
   private addDryAdiabatsLines() {
-    let dryAdiobatsSerie = this.generateLineOnChart("Dry adiobat", '#cb0e3a');
+    let dryAdiobatsSerie = this.generateLineOnChart("Dry adiobat", this.chartAppearance!.dryAdiabaticFunctionColor);
     this.emagramChart.series.push(dryAdiobatsSerie)
 
     for (let i = -80; i < 150; i += 10) {
-      let dryAdiobatsSeries = this.generateLineOnChart('Ratio', '#cb0e3a',
+      let dryAdiobatsSeries = this.generateLineOnChart('Ratio', this.chartAppearance!.dryAdiabaticFunctionColor,
         generateDryAdiabatFunctionForEmagram(i), ':previous')
       this.emagramChart.series.push(dryAdiobatsSeries)
     }
@@ -122,5 +127,9 @@ export class DiagramComponent extends AbstractDiagram implements OnInit {
     this.emagramChart = this.getChart("Emagram")
   }
 
+
+  private adjustChartColor(){
+    this.emagramChart.series[0].color = "yellow"
+  }
 
 }

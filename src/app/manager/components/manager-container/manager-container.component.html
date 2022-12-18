@@ -1,21 +1,21 @@
 <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
-<li [ngbNavItem]="1">
-  <a ngbNavLink>Data to Chart</a>
-  <ng-template ngbNavContent>
-<app-thermodata></app-thermodata>
-  </ng-template>
-</li>
-<li [ngbNavItem]="2">
-  <a ngbNavLink>Chart options</a>
-  <ng-template ngbNavContent>
+  <li [ngbNavItem]="1">
+    <a ngbNavLink>Data to Chart</a>
+    <ng-template ngbNavContent>
+      <app-thermodata></app-thermodata>
+    </ng-template>
+  </li>
+  <li [ngbNavItem]="2">
+    <a ngbNavLink>Chart options</a>
+    <ng-template ngbNavContent>
+      <app-chart-options></app-chart-options>
+    </ng-template>
+  </li>
+  <li [ngbNavItem]="3">
+    <a ngbNavLink>Future</a>
+    <ng-template ngbNavContent>
 
-  </ng-template>
-</li>
-<li [ngbNavItem]="3">
-  <a ngbNavLink>Future</a>
-  <ng-template ngbNavContent>
-
-  </ng-template>
-</li>
+    </ng-template>
+  </li>
 </ul>
 <div [ngbNavOutlet]="nav" class="mt-2"></div>

@@ -1,0 +1,19 @@
+<div *ngIf="defaultOptions$ | async;" >
+<form [formGroup]="chartOptionsForm" (ngSubmit)="save()">
+  <div class="row">
+    <div class="col-6">
+      <div class="form-group">
+        <label for="dryAdiabaticFunctionColor">Title</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="dryAdiabaticFunctionColor"
+          id="dryAdiabaticFunctionColor"
+          aria-describedby="emailHelp"
+          placeholder="Title"
+        />
+      </div>
+    </div>
+  </div>
+</form>
+</div>

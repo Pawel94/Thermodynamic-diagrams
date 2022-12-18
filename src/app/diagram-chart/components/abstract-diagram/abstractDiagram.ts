@@ -1,10 +1,13 @@
 import {helperLines, pointTO} from "../../modal/modal";
+import {chartAppearance} from "../../../common/services/share-services/chart-apperance/chart-appearance.service";
 
 export abstract class AbstractDiagram {
   rage: number[] = [1000, 900, 800, 700, 600, 500, 400, 300, 200, 100]
   actualObservationTemperature?: pointTO[]
   actualObservationDewTemperature?: pointTO[]
   zoomFlag = false;
+
+  chartAppearance?:chartAppearance
 
   constructor() {
   }
