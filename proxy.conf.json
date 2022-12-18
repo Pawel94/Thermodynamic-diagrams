@@ -1,0 +1,10 @@
+{
+  "/api": {
+    "target": "http://weather.uwyo.edu/cgi-bin/sounding?region=samer&TYPE=TEXT%3ALIST&YEAR=2022&MONTH=11&FROM=2400&TO=2400&STNM=82026",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api": ""
+    }
+  }
+}
