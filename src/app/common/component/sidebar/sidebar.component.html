@@ -4,9 +4,19 @@
     <h2>Meteo Chart</h2>
     <hr>
     <div class="divider">Current date</div>
+    <div *ngIf="loaderService.isLoading | async; else notLoading">
+      <app-spinner></app-spinner>
+    </div>
+    <ng-template #notLoading>
     <p style="color:#74b999;">  {{getDataFromStation()}}</p>
+    </ng-template>
     <div class="divider">Current station</div>
-    <p style="color:#74b999;"> {{getStationName()}}</p>
+    <div *ngIf="loaderService.isLoading | async; else notLoading">
+      <app-spinner></app-spinner>
+    </div>
+    <ng-template #notLoading>
+      <p style="color:#74b999;"> {{getStationName()}}</p>
+    </ng-template>
   </div>
   <ul class="nav nav-pills flex-column text-center ">
     <div class="divider">Choose chart</div>

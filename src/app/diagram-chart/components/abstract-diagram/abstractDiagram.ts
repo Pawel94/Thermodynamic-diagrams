@@ -7,7 +7,7 @@ export abstract class AbstractDiagram {
   actualObservationDewTemperature?: pointTO[]
   zoomFlag = false;
 
-  chartAppearance?:chartAppearance
+  chartAppearance!:chartAppearance
 
   constructor() {
   }

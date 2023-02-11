@@ -10,6 +10,7 @@ import {
   chartAppearance,
   ChartAppearanceService
 } from "../../../common/services/share-services/chart-apperance/chart-appearance.service";
+import {ActivatedRoute} from "@angular/router";
 
 const Draggable = require("highcharts/modules/draggable-points.js");
 Draggable(Highcharts);
@@ -39,7 +40,7 @@ export class DiagramContainerComponent implements OnInit {
   isZoomed: Observable<any> = this.zoom.zoomChartState$;
   mappedDataToSkewTDiagram$: Observable<any> = this.thermoDataService.mappedDataToSkewTDiagram$
   Highcharts: typeof Highcharts = Highcharts;
-  dataToChart$: Observable<any> = this.diagramService.getActualData()
+
   chartView$: Observable<string> = this.chartViewDataService.actualChartName$
   chartAppearance$: Observable<chartAppearance> = this.chartAppearance.chartAppearance$
   private chartViewName?: string;
@@ -48,13 +49,14 @@ export class DiagramContainerComponent implements OnInit {
               private readonly diagramService: DiagramService,
               private readonly chartViewDataService: ChartViewService,
               private readonly zoom: ZoomChartService,
-              private readonly chartAppearance: ChartAppearanceService) {
+              private readonly chartAppearance: ChartAppearanceService,
+              private activatedRoute: ActivatedRoute,
+  ) {
   }
 
   ngOnInit(): void {
     this.chartView$.subscribe(data => this.chartViewName = data)
     this.update()
-
   }
 
   updateDataFromChart($event: any) {
@@ -62,13 +64,14 @@ export class DiagramContainerComponent implements OnInit {
   }
 
   update() {
-    this.dataToChart$
+    this.activatedRoute.data
       .subscribe(dataToChart => {
-        this.thermoDataService.setActualTermoData(dataToChart)
+        this.thermoDataService.setActualTermoData(dataToChart['startUpData'])
       })
   }
 
   destroy() {
+
   }
 
   isViewSkewT() {

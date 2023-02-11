@@ -1,8 +1,12 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {map, Observable, tap} from "rxjs";
+import {map, Observable, of, tap} from "rxjs";
 import {dataFromObservations, features, pointTO} from "../modal/modal";
 import {SuccessHandlerService} from "../../common/services/success-handler-notification/success-handler.service";
+import {catchError} from "rxjs/operators";
+import {ErrorHandlerService} from "../../common/services/error-handler-notification/error-handler.service";
+import {Router} from "@angular/router";
+import {LoaderService} from "../../common/services/load-service/load-service";
 
 
 @Injectable({
@@ -15,10 +19,31 @@ export class DiagramService {
   stationStartNumber: string | number = '12'
   stationEndNumber: string | number = '374'
 
-  constructor(private readonly http: HttpClient, private readonly successNotification: SuccessHandlerService) {
+  constructor(private readonly http: HttpClient,
+              private readonly successNotification: SuccessHandlerService,
+              private readonly notificationError: ErrorHandlerService,
+              private readonly router: Router,
+              public readonly loaderService: LoaderService) {
   }
 
-  public getActualData(date?: any, stationNummer?: string): Observable<dataFromObservations> {
+  public setStartUpData(): Observable<dataFromObservations> {
+    return this.http
+      .get<dataFromObservations>(`https://radiosonde.mah.priv.at/data/station/12/374/2023/01/fm94/12374_20230127_120000.geojson`)
+      .pipe(
+        map(element => {
+          return {
+            properties: element.properties,
+            features: this.mapPoints(element.features),
+            mappedDataToChart: this.measuredData(element.features)
+          }
+        })
+        , catchError(err => {
+          return of({} as dataFromObservations)
+        })
+      )
+  }
+
+  public getNewData(date?: any, stationNummer?: string): Observable<dataFromObservations> {
     if (date && stationNummer) this.prepareDataToHTTPGet(date, stationNummer)
     return this.http
       .get<dataFromObservations>(`https://radiosonde.mah.priv.at/data/station/${this.stationStartNumber}/${this.stationEndNumber}/2022/${this.dateMonth}/fm94/${this.stationNummer}_${this.date}_120000.geojson`)
@@ -30,6 +55,10 @@ export class DiagramService {
           }
         }),
         tap(x => this.successNotification.setSuccessMessage("Loaded data", {stationNummer, date}))
+        , catchError(err => {
+          this.notificationError.setErrorMessage("Cannot get data for current data", err)
+          return of({} as dataFromObservations)
+        })
       )
   }
 

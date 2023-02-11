@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {DiagramService} from "../../diagram-chart/services/diagram.service";
 import {ThermodataService} from "../../common/services/share-services/thermodata/thermodata.service";
 
@@ -10,9 +10,9 @@ import {ThermodataService} from "../../common/services/share-services/thermodata
   styleUrls: ['./station-search-model.component.scss'],
 })
 export class StationSearchModelComponent implements OnInit {
-  searchForm: FormGroup = new FormGroup({
-      calendar: new FormControl('',),
-      stationNummer: new FormControl('',),
+  searchForm: UntypedFormGroup = new UntypedFormGroup({
+      calendar: new UntypedFormControl('',),
+      stationNummer: new UntypedFormControl('',),
     },
   );
 
@@ -38,10 +38,9 @@ export class StationSearchModelComponent implements OnInit {
   getDataFromStation() {
     const date = this.searchForm.get("calendar")?.value
     const station = this.searchForm.get("stationNummer")?.value
-    this.diagramService.getActualData(date, station).subscribe(dataToChart => {
-      this.thermoDataService.setActualTermoData(dataToChart)
-      this.closeModal()
-    })
-
+    this.diagramService.getNewData(date, station).subscribe(dataToChart => {
+        this.thermoDataService.setActualTermoData(dataToChart)
+        this.closeModal()
+      },)
   }
 }

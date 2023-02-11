@@ -20,7 +20,7 @@ export class DiagramComponent extends AbstractDiagram implements OnInit {
   @Input() mappedChartData$?: Observable<any>;
   @Input() isZoom?: Observable<boolean>;
   @Input() mappedChartSkewTData$?: Observable<any>
-  @Input() chartAppearance$?:Observable<chartAppearance>
+  @Input() chartAppearance$!: Observable<chartAppearance>
   @Output() newChartData = new EventEmitter<any>();
   rage2: number[] = [1100, 1000, 900, 800, 700, 600, 500, 400, 300, 200, 100]
 
@@ -30,10 +30,9 @@ export class DiagramComponent extends AbstractDiagram implements OnInit {
 
 
   ngOnInit(): void {
-    combineLatest([this.mappedChartData$, this.isZoom,this.chartAppearance$]).subscribe((chartData: any) => {
+    combineLatest([this.mappedChartData$, this.isZoom, this.chartAppearance$]).subscribe((chartData: any) => {
         this.zoomFlag = chartData[1];
         this.chartAppearance = chartData[2]
-      console.log(this.chartAppearance!.dryAdiabaticFunctionColor)
         this.actualObservationTemperature = chartData[0]?.listOfPointsTemperature
         this.actualObservationDewTemperature = chartData[0]?.listOfPointsDewTemperature
         this.initChart()
@@ -66,11 +65,11 @@ export class DiagramComponent extends AbstractDiagram implements OnInit {
 
   private addMoistAdiabatsLines() {
 
-    let obj = this.generateLineOnChart('Moist adiabatic', '#2f7ed8')
+    let obj = this.generateLineOnChart('Moist adiabatic', this.chartAppearance.saturatedAdiabaticFunctionColor)
     this.emagramChart.series.push(obj)
 
     for (let i = -80; i < 60; i += 10) {
-      let obj = this.generateLineOnChart('Moist adiabatic', '#2f7ed8',
+      let obj = this.generateLineOnChart('Moist adiabatic', this.chartAppearance.saturatedAdiabaticFunctionColor,
         generateMoistAdiabaticEmagramLine(this.rage2, i), ':previous')
       this.emagramChart.series.push(obj)
     }
@@ -127,9 +126,5 @@ export class DiagramComponent extends AbstractDiagram implements OnInit {
     this.emagramChart = this.getChart("Emagram")
   }
 
-
-  private adjustChartColor(){
-    this.emagramChart.series[0].color = "yellow"
-  }
 
 }

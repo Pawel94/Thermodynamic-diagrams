@@ -7,6 +7,7 @@ import {InfoModalComponent} from "../info-modal/info-modal.component";
 import {ChartViewService} from "../../services/share-services/chart-view/chart-view.service";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {ZoomChartService} from "../../services/share-services/zoom-chart/zoom-chart.service";
+import {LoaderService} from "../../services/load-service/load-service";
 
 @Component({
   selector: 'app-sidebar',
@@ -31,7 +32,8 @@ export class SidebarComponent implements OnInit {
   constructor(private readonly thermoService: ThermodataService,
               private readonly chartViewDataService: ChartViewService,
               public readonly modalService: NgbModal,
-              private readonly zoomService: ZoomChartService) {
+              private readonly zoomService: ZoomChartService,
+              public readonly loaderService: LoaderService,) {
   }
 
   ngOnInit(): void {

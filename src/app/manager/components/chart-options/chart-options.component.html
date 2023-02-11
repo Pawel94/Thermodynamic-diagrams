@@ -1,19 +1,60 @@
-<div *ngIf="defaultOptions$ | async;" >
-<form [formGroup]="chartOptionsForm" (ngSubmit)="save()">
-  <div class="row">
-    <div class="col-6">
-      <div class="form-group">
-        <label for="dryAdiabaticFunctionColor">Title</label>
-        <input
-          type="text"
-          class="form-control"
-          formControlName="dryAdiabaticFunctionColor"
-          id="dryAdiabaticFunctionColor"
-          aria-describedby="emailHelp"
-          placeholder="Title"
-        />
+<div *ngIf="loadedDefaultOptions$ | async;">
+  <form [formGroup]="chartOptionsForm" (ngSubmit)="save()">
+    <div class="row">
+      <div class="col-4">
+        <div class="row ">
+          <div class="col-6 ">
+            <h6>LINE CHART COLORS</h6>
+          </div>
+        </div>
+        <div class="row ">
+          <div class="col-6 ">
+            <p>Dry Adiabatic Function:</p>
+          </div>
+          <div class="col-2">
+            <ngx-colors
+              ngx-colors-trigger
+              formControlName="dryAdiabaticFunctionColor"
+              id="dryAdiabaticFunctionColor"
+            ></ngx-colors>
+          </div>
+        </div>
+        <div class="row ">
+          <div class="col-6 ">
+            <p>Saturated Adiabatic Function:</p>
+          </div>
+          <div class="col-2">
+            <ngx-colors
+              ngx-colors-trigger
+              formControlName="saturatedAdiabaticFunctionColor"
+              id="saturatedAdiabaticFunctionColor"
+            ></ngx-colors>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="row ">
+          <div class="col-6">
+            <h6>LINE CHART SIZE</h6>
+          </div>
+        </div>
+        <div class="row ">
+          <div class="col-6 ">
+            <p>Dry Adiabatic Size:</p>
+          </div>
+          <div class="col-1">
+            <input type="number"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6 ">
+            <p>Saturated Adiabatic size:</p>
+          </div>
+          <div class="col-1no">
+            <input type="number"/>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</form>
+  </form>
 </div>
