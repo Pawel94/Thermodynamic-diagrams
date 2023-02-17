@@ -1,0 +1,19 @@
+<ng-container [formGroup]="form">
+  <div class="col-6">
+    <textarea class="border-0" readonly formControlName="name"></textarea>
+  </div>
+  <div class="col-2">
+    <ngx-colors
+      ngx-colors-trigger
+      formControlName="lineColor"
+      id="lineColor"
+    ></ngx-colors>
+  </div>
+  <div class="col-3">
+    <input type="number"
+           class="form-control"
+           min="0"
+           max="16"
+           formControlName="lineSize"/>
+  </div>
+</ng-container>
