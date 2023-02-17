@@ -1,60 +1,10 @@
-<div *ngIf="loadedDefaultOptions$ | async;">
-  <form [formGroup]="chartOptionsForm" (ngSubmit)="save()">
-    <div class="row">
-      <div class="col-4">
-        <div class="row ">
-          <div class="col-6 ">
-            <h6>LINE CHART COLORS</h6>
-          </div>
-        </div>
-        <div class="row ">
-          <div class="col-6 ">
-            <p>Dry Adiabatic Function:</p>
-          </div>
-          <div class="col-2">
-            <ngx-colors
-              ngx-colors-trigger
-              formControlName="dryAdiabaticFunctionColor"
-              id="dryAdiabaticFunctionColor"
-            ></ngx-colors>
-          </div>
-        </div>
-        <div class="row ">
-          <div class="col-6 ">
-            <p>Saturated Adiabatic Function:</p>
-          </div>
-          <div class="col-2">
-            <ngx-colors
-              ngx-colors-trigger
-              formControlName="saturatedAdiabaticFunctionColor"
-              id="saturatedAdiabaticFunctionColor"
-            ></ngx-colors>
-          </div>
-        </div>
-      </div>
-      <div class="col-4">
-        <div class="row ">
-          <div class="col-6">
-            <h6>LINE CHART SIZE</h6>
-          </div>
-        </div>
-        <div class="row ">
-          <div class="col-6 ">
-            <p>Dry Adiabatic Size:</p>
-          </div>
-          <div class="col-1">
-            <input type="number"/>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-6 ">
-            <p>Saturated Adiabatic size:</p>
-          </div>
-          <div class="col-1no">
-            <input type="number"/>
-          </div>
-        </div>
-      </div>
-    </div>
-  </form>
+<div *ngIf="loadedDefaultOptions$ | async;" class="align-items-center">
+  <div class="d-flex justify-content-center">
+    <form [formGroup]="chartOptionsForm" (ngSubmit)="save()">
+      <ng-container *ngFor="let item of listOfPropertiesToEdit">
+        <app-chart-option-form-group [formGroupName]=item
+                                     class="row"></app-chart-option-form-group>
+      </ng-container>
+    </form>
+  </div>
 </div>

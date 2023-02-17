@@ -1,14 +1,12 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
+import {modalAppearance} from "../../../../diagram-chart/modal/apperanceModel";
 
 export interface chartAppearance {
-  // moistLineColor: string,
-  dryAdiabaticFunctionColor: string,
-  dryAdiabaticFunctionSize:number
-  saturatedAdiabaticFunctionColor: string,
-  // thermoDataColor: string
-  // dewDataColor: string,
-  // ratioLineColor: string,
+  dryAdiabaticFunctionAppearance:modalAppearance;
+  ratioFunctionAppearance:modalAppearance
+  moistAdiabaticFunctionAppearance:modalAppearance
+  temperatureFunction:modalAppearance
 }
 
 @Injectable({
@@ -16,7 +14,7 @@ export interface chartAppearance {
 })
 export class ChartAppearanceService {
   private chartAppearance = new BehaviorSubject<chartAppearance>(
-    DEFAULT_APPERANCE
+    DEFAULT_APPEARANCE
   );
   chartAppearance$ = this.chartAppearance.asObservable();
 
@@ -28,9 +26,25 @@ export class ChartAppearanceService {
   }
 }
 
-export let DEFAULT_APPERANCE = {
-  dryAdiabaticFunctionColor: '#347957',
-  dryAdiabaticFunctionSize:6,
-  saturatedAdiabaticFunctionColor: '#2f7ed8'
+export let DEFAULT_APPEARANCE = {
 
+  dryAdiabaticFunctionAppearance:{
+    name:"Dry Adiabatic Function Appearance",
+    lineColor:'#347957',
+    lineSize:2
+  },
+  ratioFunctionAppearance:{
+    name:"Ratio Function Appearance",
+    lineColor:'#40d82f',
+    lineSize:2
+  },
+  moistAdiabaticFunctionAppearance:{
+    name:"Moist Adiabatic Function Appearance",
+    lineColor:'#2f7ed8',
+    lineSize:2
+  },
+  // temperatureFunction:{
+  //   lineColor:'#cb0e3a',
+  //   lineSize:14
+  // }
 } as chartAppearance

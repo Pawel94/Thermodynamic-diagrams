@@ -26,6 +26,7 @@ import {ChartOptionsComponent} from './manager/components/chart-options/chart-op
 import {NgxColorsModule} from "ngx-colors";
 import {SpinnerComponent} from './common/component/spinner/spinner.component';
 import {MainPageComponent} from './main-page/main-page.component';
+import { ChartOptionFormGroupComponent } from './manager/components/chart-options/chart-option-form-group/chart-option-form-group.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import {MainPageComponent} from './main-page/main-page.component';
     ChartOptionsComponent,
     SpinnerComponent,
     MainPageComponent,
+    ChartOptionFormGroupComponent,
 
 
   ],

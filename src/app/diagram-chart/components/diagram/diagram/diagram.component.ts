@@ -52,11 +52,11 @@ export class DiagramComponent extends AbstractDiagram implements OnInit {
 
 
   private addDryAdiabatsLines() {
-    let dryAdiobatsSerie = this.generateLineOnChart("Dry adiobat", this.chartAppearance!.dryAdiabaticFunctionColor);
+    let dryAdiobatsSerie = this.generateLineOnChart("Dry adiobat", this.chartAppearance!.dryAdiabaticFunctionAppearance);
     this.emagramChart.series.push(dryAdiobatsSerie)
 
     for (let i = -80; i < 150; i += 10) {
-      let dryAdiobatsSeries = this.generateLineOnChart('Ratio', this.chartAppearance!.dryAdiabaticFunctionColor,
+      let dryAdiobatsSeries = this.generateLineOnChart('Ratio', this.chartAppearance!.dryAdiabaticFunctionAppearance,
         generateDryAdiabatFunctionForEmagram(i), ':previous')
       this.emagramChart.series.push(dryAdiobatsSeries)
     }
@@ -65,11 +65,11 @@ export class DiagramComponent extends AbstractDiagram implements OnInit {
 
   private addMoistAdiabatsLines() {
 
-    let obj = this.generateLineOnChart('Moist adiabatic', this.chartAppearance.saturatedAdiabaticFunctionColor)
+    let obj = this.generateLineOnChart('Moist adiabatic', this.chartAppearance.moistAdiabaticFunctionAppearance)
     this.emagramChart.series.push(obj)
 
     for (let i = -80; i < 60; i += 10) {
-      let obj = this.generateLineOnChart('Moist adiabatic', this.chartAppearance.saturatedAdiabaticFunctionColor,
+      let obj = this.generateLineOnChart('Moist adiabatic', this.chartAppearance.moistAdiabaticFunctionAppearance,
         generateMoistAdiabaticEmagramLine(this.rage2, i), ':previous')
       this.emagramChart.series.push(obj)
     }
@@ -84,11 +84,11 @@ export class DiagramComponent extends AbstractDiagram implements OnInit {
       result.push(saturationMixingRatioLine)
     })
 
-    let obj = this.generateLineOnChart('Ratio', '#40d82f')
+    let obj = this.generateLineOnChart('Ratio', this.chartAppearance.ratioFunctionAppearance)
     this.emagramChart.series.push(obj)
 
     result.forEach((x: any) => {
-      let obj = this.generateLineOnChart('Ratio', '#40d82f',
+      let obj = this.generateLineOnChart('Ratio', this.chartAppearance.ratioFunctionAppearance,
         x, ':previous')
       this.emagramChart.series.push(obj)
     })

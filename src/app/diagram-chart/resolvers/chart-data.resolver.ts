@@ -14,8 +14,7 @@ export class ChartDataResolver implements Resolve<boolean> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     return this.diagramService.setStartUpData().pipe(
       delay(3000),
-      catchError(error => {
-        console.error("!!!")
+      catchError(() => {
         return of('No data');
       }))
   }

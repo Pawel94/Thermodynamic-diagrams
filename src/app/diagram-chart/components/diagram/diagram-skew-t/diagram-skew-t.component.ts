@@ -6,6 +6,7 @@ import {
 } from "../../../../common/utils";
 import {combineLatest, Observable} from "rxjs";
 import {AbstractDiagram} from "../../abstract-diagram/abstractDiagram";
+import {DEFAULT_APPEARANCE} from "../../../../common/services/share-services/chart-apperance/chart-appearance.service";
 
 @Component({
   selector: 'app-diagram-skew-t',
@@ -40,21 +41,21 @@ export class DiagramSkewTComponent extends AbstractDiagram implements OnInit {
 
   private addMoistAdiabatsLines() {
 
-    let obj = this.generateLineOnChart('Moist adiabatic', '#2f7ed8')
+    let obj = this.generateLineOnChart('Moist adiabatic', DEFAULT_APPEARANCE.moistAdiabaticFunctionAppearance)
     this.skewT.series.push(obj)
     for (let i = -80; i < 90; i += 10) {
-      let obj = this.generateLineOnChart('Moist adiabatic', '#2f7ed8',
+      let obj = this.generateLineOnChart('Moist adiabatic', DEFAULT_APPEARANCE.moistAdiabaticFunctionAppearance,
         generateMoistAdiabaticSkewTLine(this.rage, i), ':previous')
       this.skewT.series.push(obj)
     }
   }
 
   private addThermoLines() {
-    let dryAdiobatsSerie = this.generateLineOnChart("Temperature", '#cb0e3a');
+    let dryAdiobatsSerie = this.generateLineOnChart("Temperature", DEFAULT_APPEARANCE.temperatureFunction);
     this.skewT.series.push(dryAdiobatsSerie)
 
     for (let i = -180; i < 150; i += 10) {
-      let dryAdiobatsSeries = this.generateLineOnChart('Temperature', '#cb0e3a',
+      let dryAdiobatsSeries = this.generateLineOnChart('Temperature', DEFAULT_APPEARANCE.temperatureFunction,
         generateThermoLines(i), ':previous')
       this.skewT.series.push(dryAdiobatsSeries)
     }
@@ -83,11 +84,11 @@ export class DiagramSkewTComponent extends AbstractDiagram implements OnInit {
   }
 
   private addDryAdiabatsLines() {
-    let dryAdiobatsSerie = this.generateLineOnChart("Dry adiobat", '#21cb0e');
+    let dryAdiobatsSerie = this.generateLineOnChart("Dry adiobat", DEFAULT_APPEARANCE.dryAdiabaticFunctionAppearance);
     this.skewT.series.push(dryAdiobatsSerie)
 
     for (let i = -80; i < 150; i += 10) {
-      let dryAdiobatsSeries = this.generateLineOnChart('Ratio', '#21cb0e',
+      let dryAdiobatsSeries = this.generateLineOnChart('Ratio', DEFAULT_APPEARANCE.ratioFunctionAppearance,
         generateDryAdiabatFunctionForSkewT(i), ':previous')
       this.skewT.series.push(dryAdiobatsSeries)
     }
