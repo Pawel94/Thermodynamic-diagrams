@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {
   chartAppearance,
@@ -17,7 +17,8 @@ export type ControlsOf<T extends Record<string, any>> = {
 @Component({
   selector: 'app-chart-options',
   templateUrl: './chart-options.component.html',
-  styleUrls: ['./chart-options.component.scss']
+  styleUrls: ['./chart-options.component.scss'],
+  changeDetection:ChangeDetectionStrategy.OnPush
 })
 export class ChartOptionsComponent implements OnInit {
 

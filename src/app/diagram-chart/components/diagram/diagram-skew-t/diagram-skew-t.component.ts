@@ -1,24 +1,22 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {
   generateDryAdiabatFunctionForSkewT,
   generateMoistAdiabaticSkewTLine,
   generateThermoLines,
 } from "../../../../common/utils";
-import {combineLatest, Observable} from "rxjs";
+import {Observable} from "rxjs";
 import {AbstractDiagram} from "../../abstract-diagram/abstractDiagram";
-import {chartAppearance} from "../../../../common/services/share-services/chart-apperance/chart-appearance.service";
 
 @Component({
   selector: 'app-diagram-skew-t',
   templateUrl: './diagram-skew-t.component.html',
-  styleUrls: ['./diagram-skew-t.component.scss']
+  styleUrls: ['./diagram-skew-t.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DiagramSkewTComponent extends AbstractDiagram implements OnInit {
 
   @Input() HighChart: any
-  @Input() mappedChartDataSkewT$?: Observable<any>;
-  @Input() isZoom?: Observable<boolean>;
-  @Input() chartAppearance$!: Observable<chartAppearance>
+  @Input() data$!: Observable<any>
   updateFlag = false;
 
   constructor() {
@@ -28,7 +26,7 @@ export class DiagramSkewTComponent extends AbstractDiagram implements OnInit {
   skewT: any
 
   ngOnInit(): void {
-    combineLatest([this.mappedChartDataSkewT$, this.isZoom, this.chartAppearance$]).subscribe(([chartData, zoom, chartAppearance]: any) => {
+    this.data$.subscribe(([chartData, zoom, chartAppearance]: any) => {
       this.zoomFlag = zoom;
       this.chartAppearance = chartAppearance
       this.actualObservationTemperature = chartData?.listOfPointsTemperature

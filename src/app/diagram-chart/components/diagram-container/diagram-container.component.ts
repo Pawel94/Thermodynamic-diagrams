@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {Observable} from "rxjs";
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {combineLatest, map, Observable, tap} from "rxjs";
 import {ThermodataService} from "../../../common/services/share-services/thermodata/thermodata.service";
 import {DiagramService} from "../../services/diagram.service";
 import * as Highcharts from "highcharts";
@@ -21,6 +21,7 @@ Exporting(Highcharts);
   selector: 'app-diagram-container',
   templateUrl: './diagram-container.component.html',
   styleUrls: ['./diagram-container.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger('fade', [
       transition(':enter', [
@@ -35,14 +36,17 @@ Exporting(Highcharts);
   ]
 
 })
-export class DiagramContainerComponent implements OnInit {
+export class DiagramContainerComponent {
   mappedDataToDiagram$: Observable<any> = this.thermoDataService.mappedDataToDiagram$
   isZoomed: Observable<any> = this.zoom.zoomChartState$;
   mappedDataToSkewTDiagram$: Observable<any> = this.thermoDataService.mappedDataToSkewTDiagram$
   Highcharts: typeof Highcharts = Highcharts;
-
-  chartView$: Observable<string> = this.chartViewDataService.actualChartName$
+  chartView$: Observable<string> = this.chartViewDataService.actualChartName$.pipe(map(chartName => this.chartViewName = chartName))
   chartAppearance$: Observable<chartAppearance> = this.chartAppearance.chartAppearance$
+  dataToDiagramChart$: Observable<any> = combineLatest([this.mappedDataToDiagram$, this.isZoomed, this.chartAppearance$])
+  dataToSkewTChart$: Observable<any> = combineLatest([this.mappedDataToSkewTDiagram$, this.isZoomed, this.chartAppearance$])
+  dataFromActivationRoute$: Observable<any> = this.activatedRoute.data.pipe(tap(dataToChart => this.thermoDataService.setActualTermoData(dataToChart['startUpData'])))
+
   private chartViewName?: string;
 
   constructor(private readonly thermoDataService: ThermodataService,
@@ -50,28 +54,13 @@ export class DiagramContainerComponent implements OnInit {
               private readonly chartViewDataService: ChartViewService,
               private readonly zoom: ZoomChartService,
               private readonly chartAppearance: ChartAppearanceService,
-              private activatedRoute: ActivatedRoute,
+              private readonly activatedRoute: ActivatedRoute,
   ) {
   }
 
-  ngOnInit(): void {
-    this.chartView$.subscribe(data => this.chartViewName = data)
-    this.update()
-  }
 
   updateDataFromChart($event: any) {
     console.log($event)
-  }
-
-  update() {
-    this.activatedRoute.data
-      .subscribe(dataToChart => {
-        this.thermoDataService.setActualTermoData(dataToChart['startUpData'])
-      })
-  }
-
-  destroy() {
-
   }
 
   isViewSkewT() {

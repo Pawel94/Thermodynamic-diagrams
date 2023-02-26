@@ -1,31 +1,24 @@
-<div class="container">
-  <div class="row">
-    <div @fade *ngIf="isViewEmagram()">
-      <app-diagram
-        [mappedChartData$]="mappedDataToDiagram$"
-        [isZoom]="isZoomed"
-        [mappedChartSkewTData$]="mappedDataToSkewTDiagram$"
-        [chartAppearance$]="chartAppearance$"
-        (newChartData)="updateDataFromChart($event)"
-        [HighChart]="Highcharts"
-
-      ></app-diagram>
-    </div>
-    <div @fade *ngIf="isViewSkewT()">
-      <app-diagram-skew-t
-        [isZoom]="isZoomed"
-        [HighChart]="Highcharts"
-        [chartAppearance$]="chartAppearance$"
-        [mappedChartDataSkewT$]="mappedDataToSkewTDiagram$"
-      >
-      </app-diagram-skew-t>
+<ng-container *ngIf="{data:dataFromActivationRoute$ |async , chart:chartView$ | async}">
+  <div class="container">
+    <div class="row">
+      <div @fade *ngIf="isViewEmagram()">
+        <app-diagram
+          [data$]="dataToDiagramChart$"
+          (newChartData)="updateDataFromChart($event)"
+          [HighChart]="Highcharts"
+        ></app-diagram>
+      </div>
+      <div @fade *ngIf="isViewSkewT()">
+        <app-diagram-skew-t
+          [data$]="dataToSkewTChart$"
+          [HighChart]="Highcharts"
+        >
+        </app-diagram-skew-t>
+      </div>
     </div>
     <div class="row">
+      <app-manager-container></app-manager-container>
     </div>
   </div>
-  <div class="row">
-    <app-manager-container></app-manager-container>
-  </div>
-</div>
-
+</ng-container>
 

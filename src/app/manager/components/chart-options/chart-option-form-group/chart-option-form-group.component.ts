@@ -1,10 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {FormGroup, FormGroupDirective} from "@angular/forms";
 
 @Component({
   selector: 'app-chart-option-form-group',
   templateUrl: './chart-option-form-group.component.html',
-  styleUrls: ['./chart-option-form-group.component.scss']
+  styleUrls: ['./chart-option-form-group.component.scss'],
+  changeDetection:ChangeDetectionStrategy.OnPush
 })
 export class ChartOptionFormGroupComponent implements OnInit {
   @Input() formGroupName!: string

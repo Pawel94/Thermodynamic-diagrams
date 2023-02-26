@@ -1,26 +1,23 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {
   generateDryAdiabatFunctionForEmagram,
   generateMoistAdiabaticEmagramLine,
   generateSaturationMixingRatioLine,
 } from "../../../../common/utils";
-import {combineLatest, Observable} from "rxjs";
+import {Observable} from "rxjs";
 import {AbstractDiagram} from "../../abstract-diagram/abstractDiagram";
-import {chartAppearance} from "../../../../common/services/share-services/chart-apperance/chart-appearance.service";
 
 
 @Component({
   selector: 'app-diagram',
   templateUrl: './diagram.component.html',
-  styleUrls: ['./diagram.component.scss']
+  styleUrls: ['./diagram.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DiagramComponent extends AbstractDiagram implements OnInit {
   updateFlag = false;
 
-  @Input() mappedChartData$?: Observable<any>;
-  @Input() isZoom?: Observable<boolean>;
-  @Input() mappedChartSkewTData$?: Observable<any>
-  @Input() chartAppearance$!: Observable<chartAppearance>
+  @Input() data$!: Observable<any>
   @Output() newChartData = new EventEmitter<any>();
   rage2: number[] = [1100, 1000, 900, 800, 700, 600, 500, 400, 300, 200, 100]
   coreData?: any;
@@ -29,7 +26,7 @@ export class DiagramComponent extends AbstractDiagram implements OnInit {
 
 
   ngOnInit(): void {
-    combineLatest([this.mappedChartData$, this.isZoom, this.chartAppearance$]).subscribe(([chartData, zoom, chartAppearance]: any) => {
+    this.data$.subscribe(([chartData, zoom, chartAppearance]: any) => {
         this.zoomFlag = zoom;
         this.chartAppearance = chartAppearance
         this.actualObservationTemperature = chartData?.listOfPointsTemperature
