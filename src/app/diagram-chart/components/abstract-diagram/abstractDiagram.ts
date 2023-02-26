@@ -1,4 +1,4 @@
-import {helperLines, pointTO} from "../../modal/modal";
+import {pointTO} from "../../modal/modal";
 import {chartAppearance} from "../../../common/services/share-services/chart-apperance/chart-appearance.service";
 import {modalAppearance} from "../../modal/apperanceModel";
 
@@ -7,13 +7,12 @@ export abstract class AbstractDiagram {
   actualObservationTemperature?: pointTO[]
   actualObservationDewTemperature?: pointTO[]
   zoomFlag = false;
-
-  chartAppearance!:chartAppearance
+  chartAppearance!: chartAppearance
 
   constructor() {
   }
-  public getChart(name: string) {
 
+  public getChart(name: string, appearance?: chartAppearance) {
     return {
       subtitle: {
         text: name,
@@ -23,7 +22,32 @@ export abstract class AbstractDiagram {
         point: {},
         color: '#e56610',
         name: 'Thermo data',
-      }],
+      },
+        {
+          ...appearance?.dryAdiabaticFunctionAppearance,
+          id: '1',
+          linkedTo: undefined,
+          data: []
+        },
+        {
+          ...appearance?.ratioFunctionAppearance,
+          id: '2',
+          linkedTo: undefined,
+          data: []
+        },
+        {
+          ...appearance?.moistAdiabaticFunctionAppearance,
+          id: '3',
+          linkedTo: undefined,
+          data: []
+        },
+        {
+          ...appearance?.temperatureFunction,
+          id: '4',
+          linkedTo: undefined,
+          data: []
+        },
+      ],
 
       xAxis: {
         gridLineWidth: 1,
@@ -83,19 +107,10 @@ export abstract class AbstractDiagram {
 
   }
 
-  public generateLineOnChart(name: string, color: modalAppearance, data?: any, linkedTo?: string) {
-    let lineObject = new helperLines
-    lineObject.name = name
-    lineObject.color = color.lineColor
-    lineObject.lineWidth = color.lineSize
-    lineObject.data = data
-    lineObject.linkedTo = linkedTo
-    return lineObject
-  }
 
-  public getThermoChartModel(data: any) {
+  public drawLineFunction(data: any, appearance: modalAppearance, zoomFlag: boolean = true) {
     return {
-      color: '#e56610',
+      ...appearance,
       type: 'scatter',
       marker: {
         enabled: false
@@ -104,33 +119,10 @@ export abstract class AbstractDiagram {
       pointStart: 900,
       pointInterval: 1550123,
       zIndex: 1,
-      lineWidth: 6,
       dragDrop: {
         draggableY: false,
-        draggableX: true
+        draggableX: !zoomFlag
       },
-      name: 'Thermo data'
-    };
-
-  }
-
-  public getMoistAdiabatChartModel(data: any) {
-    return {
-      color: '#104ce5',
-      type: 'scatter',
-      marker: {
-        enabled: false
-      },
-      data: data,
-      pointStart: 900,
-      pointInterval: 1550123,
-      zIndex: 1,
-      lineWidth: 6,
-      dragDrop: {
-        draggableY: false,
-        draggableX: true
-      },
-      name: 'Dew point function'
     };
 
   }

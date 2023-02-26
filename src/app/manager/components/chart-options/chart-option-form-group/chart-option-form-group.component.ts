@@ -12,9 +12,7 @@ export class ChartOptionFormGroupComponent implements OnInit {
   constructor(private rootFormGroup: FormGroupDirective) { }
 
   ngOnInit(): void {
-    console.warn(this.formGroupName)
     this.form = this.rootFormGroup.control.get(this.formGroupName) as FormGroup
-
   }
 
 }

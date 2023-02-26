@@ -1,5 +1,6 @@
 export interface modalAppearance{
   name:string,
-  lineColor:string,
-  lineSize:number
+  color:string,
+  lineWidth:number
+  linkedTo?:string
 }

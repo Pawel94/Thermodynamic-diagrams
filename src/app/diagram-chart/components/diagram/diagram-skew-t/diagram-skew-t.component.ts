@@ -6,7 +6,7 @@ import {
 } from "../../../../common/utils";
 import {combineLatest, Observable} from "rxjs";
 import {AbstractDiagram} from "../../abstract-diagram/abstractDiagram";
-import {DEFAULT_APPEARANCE} from "../../../../common/services/share-services/chart-apperance/chart-appearance.service";
+import {chartAppearance} from "../../../../common/services/share-services/chart-apperance/chart-appearance.service";
 
 @Component({
   selector: 'app-diagram-skew-t',
@@ -18,6 +18,7 @@ export class DiagramSkewTComponent extends AbstractDiagram implements OnInit {
   @Input() HighChart: any
   @Input() mappedChartDataSkewT$?: Observable<any>;
   @Input() isZoom?: Observable<boolean>;
+  @Input() chartAppearance$!: Observable<chartAppearance>
   updateFlag = false;
 
   constructor() {
@@ -27,42 +28,37 @@ export class DiagramSkewTComponent extends AbstractDiagram implements OnInit {
   skewT: any
 
   ngOnInit(): void {
-    combineLatest([this.mappedChartDataSkewT$, this.isZoom]).subscribe((data: any) => {
-      this.zoomFlag = data[1]
-      this.actualObservationTemperature = data[0]?.listOfPointsTemperature
-      this.actualObservationDewTemperature = data[0]?.listOfPointsDewTemperature
+    combineLatest([this.mappedChartDataSkewT$, this.isZoom, this.chartAppearance$]).subscribe(([chartData, zoom, chartAppearance]: any) => {
+      this.zoomFlag = zoom;
+      this.chartAppearance = chartAppearance
+      this.actualObservationTemperature = chartData?.listOfPointsTemperature
+      this.actualObservationDewTemperature = chartData?.listOfPointsDewTemperature
       this.initChart()
+      this.generateIsotherms()
+      this.generateDryAdiabatsLines()
+      this.generateMoistAdiabatsLines()
       this.drawFunction()
-      this.addThermoLines()
-      this.addDryAdiabatsLines()
-      this.addMoistAdiabatsLines()
     })
   }
 
-  private addMoistAdiabatsLines() {
-
-    let obj = this.generateLineOnChart('Moist adiabatic', DEFAULT_APPEARANCE.moistAdiabaticFunctionAppearance)
-    this.skewT.series.push(obj)
+  private generateMoistAdiabatsLines() {
     for (let i = -80; i < 90; i += 10) {
-      let obj = this.generateLineOnChart('Moist adiabatic', DEFAULT_APPEARANCE.moistAdiabaticFunctionAppearance,
-        generateMoistAdiabaticSkewTLine(this.rage, i), ':previous')
-      this.skewT.series.push(obj)
+      let moistFunction = this.drawLineFunction(generateMoistAdiabaticSkewTLine(this.rage, i), this.chartAppearance!.moistAdiabaticFunctionAppearance)
+      this.skewT.series.push(moistFunction)
     }
+
   }
 
-  private addThermoLines() {
-    let dryAdiobatsSerie = this.generateLineOnChart("Temperature", DEFAULT_APPEARANCE.temperatureFunction);
-    this.skewT.series.push(dryAdiobatsSerie)
-
+  private generateIsotherms() {
     for (let i = -180; i < 150; i += 10) {
-      let dryAdiobatsSeries = this.generateLineOnChart('Temperature', DEFAULT_APPEARANCE.temperatureFunction,
-        generateThermoLines(i), ':previous')
-      this.skewT.series.push(dryAdiobatsSeries)
+      let isotherms = this.drawLineFunction(generateThermoLines(i), this.chartAppearance!.temperatureFunction)
+      this.skewT.series.push(isotherms)
     }
+
   }
 
   private initChart() {
-    this.skewT = this.getChart("Skew-T Chart")
+    this.skewT = this.getChart("Skew-T Chart", this.chartAppearance)
   }
 
   drawFunction() {
@@ -72,24 +68,18 @@ export class DiagramSkewTComponent extends AbstractDiagram implements OnInit {
   }
 
   drawNormalFunction() {
-    const chartObject = this.getThermoChartModel(this.actualObservationTemperature)
-    chartObject.dragDrop = {draggableY: false, draggableX: !this.zoomFlag};
-    this.skewT.series[0] = chartObject
+    const chartObject = this.drawLineFunction(this.actualObservationTemperature, this.chartAppearance.mainTemperature, this.zoomFlag)
+    this.skewT.series.push(chartObject)
   }
 
   drawMoistFunction() {
-    const newChart = this.getMoistAdiabatChartModel(this.actualObservationDewTemperature)
-    newChart.dragDrop = {draggableY: false, draggableX: !this.zoomFlag};
-    this.skewT.series[1] = newChart
+    const newChart = this.drawLineFunction(this.actualObservationDewTemperature, this.chartAppearance.mainDewPoint, this.zoomFlag)
+    this.skewT.series.push(newChart)
   }
 
-  private addDryAdiabatsLines() {
-    let dryAdiobatsSerie = this.generateLineOnChart("Dry adiobat", DEFAULT_APPEARANCE.dryAdiabaticFunctionAppearance);
-    this.skewT.series.push(dryAdiobatsSerie)
-
+  private generateDryAdiabatsLines() {
     for (let i = -80; i < 150; i += 10) {
-      let dryAdiobatsSeries = this.generateLineOnChart('Ratio', DEFAULT_APPEARANCE.ratioFunctionAppearance,
-        generateDryAdiabatFunctionForSkewT(i), ':previous')
+      let dryAdiobatsSeries = this.drawLineFunction(generateDryAdiabatFunctionForSkewT(i), this.chartAppearance.dryAdiabaticFunctionAppearance)
       this.skewT.series.push(dryAdiobatsSeries)
     }
   }

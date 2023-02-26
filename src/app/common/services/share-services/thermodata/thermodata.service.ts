@@ -11,7 +11,7 @@ export class ThermodataService {
   private mappedDataToSkewTDiagram = new BehaviorSubject<any>({})
   private stationData = new BehaviorSubject<any>({})
   private dataToTable = new BehaviorSubject<any>({})
-  thermoData$ = this.thermo$.asObservable();
+
   mappedDataToDiagram$ = this.mappedDataToDiagram.asObservable();
   mappedDataToSkewTDiagram$ = this.mappedDataToSkewTDiagram.asObservable();
   stationData$ = this.stationData.asObservable();

@@ -25,13 +25,13 @@ export interface chartSerie {
 export interface sharedObservationData {
   mappedDataToChart: pointTO[]
   coreData?: dataFromObservations
-  modifiedData:measuredData[]
+  modifiedData: measuredData[]
 }
 
 export interface dataFromObservations {
   features: features[]
   properties: properties
-  mappedDataToChart:measuredData[]
+  mappedDataToChart: measuredData[]
 
 }
 
@@ -39,8 +39,8 @@ export interface properties {
   arrived: string,
   channel: string
   elewation: string,
-  station_id:string
-  gts_topic:string
+  station_id: string
+  gts_topic: string
 }
 
 export interface features {
@@ -60,10 +60,10 @@ export interface measuredData {
   chart_value: pointTO
   chart_value_dew: pointTO
   id: number
-  showMarker:boolean
-  showMarkerDew:boolean
-  wind?:string
-  windDirection?:string
+  showMarker: boolean
+  showMarkerDew: boolean
+  wind?: string
+  windDirection?: string
 }
 
 export let helperLine = {
@@ -75,26 +75,5 @@ export let helperLine = {
   name: '',
 } as chartSerie
 
-export class helperLines {
-  color: string
-  enableMouseTracking: boolean
-  dashStyle: string
-  zIndex: number
-  lineWidth: number
-  name: string
-  data: any;
-  linkedTo: any;
-  marker: any;
 
-  constructor() {
-    this.color = 'rgba(227,12,12,0.32)'
-    this.enableMouseTracking = false;
-    this.dashStyle = 'Line';
-    this.zIndex = 5;
-    this.lineWidth = 1;
-    this.name = '';
-    this.marker = {
-      enabled: false
-    }
-  }
-}
+

@@ -23,27 +23,24 @@ export class DiagramComponent extends AbstractDiagram implements OnInit {
   @Input() chartAppearance$!: Observable<chartAppearance>
   @Output() newChartData = new EventEmitter<any>();
   rage2: number[] = [1100, 1000, 900, 800, 700, 600, 500, 400, 300, 200, 100]
-
   coreData?: any;
   @Input() HighChart: any
   emagramChart: any
 
 
   ngOnInit(): void {
-    combineLatest([this.mappedChartData$, this.isZoom, this.chartAppearance$]).subscribe((chartData: any) => {
-        this.zoomFlag = chartData[1];
-        this.chartAppearance = chartData[2]
-        this.actualObservationTemperature = chartData[0]?.listOfPointsTemperature
-        this.actualObservationDewTemperature = chartData[0]?.listOfPointsDewTemperature
+    combineLatest([this.mappedChartData$, this.isZoom, this.chartAppearance$]).subscribe(([chartData, zoom, chartAppearance]: any) => {
+        this.zoomFlag = zoom;
+        this.chartAppearance = chartAppearance
+        this.actualObservationTemperature = chartData?.listOfPointsTemperature
+        this.actualObservationDewTemperature = chartData?.listOfPointsDewTemperature
         this.initChart()
-        this.drawFunction()
-        this.addDryAdiabatsLines()
+        this.generateDryAdiabatsLines()
         this.generateSaturationMixingRatioLines();
-        this.addMoistAdiabatsLines()
-
+        this.generateMoistAdiabatsLines()
+        this.drawFunction()
       }
-    )
-
+    );
   }
 
   constructor() {
@@ -51,27 +48,20 @@ export class DiagramComponent extends AbstractDiagram implements OnInit {
   }
 
 
-  private addDryAdiabatsLines() {
-    let dryAdiobatsSerie = this.generateLineOnChart("Dry adiobat", this.chartAppearance!.dryAdiabaticFunctionAppearance);
-    this.emagramChart.series.push(dryAdiobatsSerie)
-
+  private generateDryAdiabatsLines() {
     for (let i = -80; i < 150; i += 10) {
-      let dryAdiobatsSeries = this.generateLineOnChart('Ratio', this.chartAppearance!.dryAdiabaticFunctionAppearance,
-        generateDryAdiabatFunctionForEmagram(i), ':previous')
+      let dryAdiobatsSeries = this.drawLineFunction(generateDryAdiabatFunctionForEmagram(i), this.chartAppearance!.dryAdiabaticFunctionAppearance)
       this.emagramChart.series.push(dryAdiobatsSeries)
+
     }
+    console.log(this.emagramChart.series)
   }
 
 
-  private addMoistAdiabatsLines() {
-
-    let obj = this.generateLineOnChart('Moist adiabatic', this.chartAppearance.moistAdiabaticFunctionAppearance)
-    this.emagramChart.series.push(obj)
-
+  private generateMoistAdiabatsLines() {
     for (let i = -80; i < 60; i += 10) {
-      let obj = this.generateLineOnChart('Moist adiabatic', this.chartAppearance.moistAdiabaticFunctionAppearance,
-        generateMoistAdiabaticEmagramLine(this.rage2, i), ':previous')
-      this.emagramChart.series.push(obj)
+      let moistFunction = this.drawLineFunction(generateMoistAdiabaticEmagramLine(this.rage2, i), this.chartAppearance!.moistAdiabaticFunctionAppearance)
+      this.emagramChart.series.push(moistFunction)
     }
   }
 
@@ -84,13 +74,10 @@ export class DiagramComponent extends AbstractDiagram implements OnInit {
       result.push(saturationMixingRatioLine)
     })
 
-    let obj = this.generateLineOnChart('Ratio', this.chartAppearance.ratioFunctionAppearance)
-    this.emagramChart.series.push(obj)
-
     result.forEach((x: any) => {
-      let obj = this.generateLineOnChart('Ratio', this.chartAppearance.ratioFunctionAppearance,
-        x, ':previous')
-      this.emagramChart.series.push(obj)
+      let ratioChart = this.drawLineFunction(x, this.chartAppearance!.ratioFunctionAppearance)
+
+      this.emagramChart.series.push(ratioChart)
     })
 
   }
@@ -103,27 +90,20 @@ export class DiagramComponent extends AbstractDiagram implements OnInit {
     })
   }
 
-
   drawFunction() {
     this.drawNormalFunction()
-    this.drawMoistFunction()
     this.updateFlag = true;
   }
 
   drawNormalFunction() {
-    const chartObject = this.getThermoChartModel(this.actualObservationTemperature)
-    chartObject.dragDrop = {draggableY: false, draggableX: !this.zoomFlag};
-    this.emagramChart.series[0] = chartObject
+    const chartObject = this.drawLineFunction(this.actualObservationTemperature, this.chartAppearance.mainTemperature, this.zoomFlag)
+    const newChart = this.drawLineFunction(this.actualObservationDewTemperature, this.chartAppearance.mainDewPoint, this.zoomFlag)
+    this.emagramChart.series.push(chartObject, newChart)
   }
 
-  drawMoistFunction() {
-    const newChart = this.getMoistAdiabatChartModel(this.actualObservationDewTemperature)
-    newChart.dragDrop = {draggableY: false, draggableX: !this.zoomFlag};
-    this.emagramChart.series[1] = newChart
-  }
 
   initChart() {
-    this.emagramChart = this.getChart("Emagram")
+    this.emagramChart = this.getChart("Emagram", this.chartAppearance)
   }
 
 

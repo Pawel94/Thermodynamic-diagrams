@@ -7,8 +7,6 @@ import {
 import {debounceTime, distinctUntilChanged, first, tap} from "rxjs";
 import {modalAppearance} from "../../../diagram-chart/modal/apperanceModel";
 
-export type  AppearanceFormTemp = Omit<chartAppearance,
-  | "temperatureFunction">;
 
 export type ControlsOf<T extends Record<string, any>> = {
   [K in keyof T]: T[K] extends Record<any, any>
@@ -23,21 +21,36 @@ export type ControlsOf<T extends Record<string, any>> = {
 })
 export class ChartOptionsComponent implements OnInit {
 
-  chartOptionsForm = new FormGroup<ControlsOf<AppearanceFormTemp>>({
+  chartOptionsForm = new FormGroup<ControlsOf<chartAppearance>>({
     dryAdiabaticFunctionAppearance: new FormGroup<ControlsOf<modalAppearance>>({
       name: new FormControl('', {nonNullable: true}),
-      lineColor: new FormControl('', {nonNullable: true}),
-      lineSize: new FormControl<number>(0, {nonNullable: true})
+      color: new FormControl('', {nonNullable: true}),
+      lineWidth: new FormControl<number>(0, {nonNullable: true})
     }),
     ratioFunctionAppearance: new FormGroup<ControlsOf<modalAppearance>>({
       name: new FormControl('', {nonNullable: true}),
-      lineColor: new FormControl('', {nonNullable: true}),
-      lineSize: new FormControl<number>(0, {nonNullable: true})
+      color: new FormControl('', {nonNullable: true}),
+      lineWidth: new FormControl<number>(0, {nonNullable: true})
     }),
     moistAdiabaticFunctionAppearance: new FormGroup<ControlsOf<modalAppearance>>({
       name: new FormControl('', {nonNullable: true}),
-      lineColor: new FormControl('', {nonNullable: true}),
-      lineSize: new FormControl<number>(0, {nonNullable: true})
+      color: new FormControl('', {nonNullable: true}),
+      lineWidth: new FormControl<number>(0, {nonNullable: true})
+    }),
+    temperatureFunction: new FormGroup<ControlsOf<modalAppearance>>({
+      name: new FormControl('', {nonNullable: true}),
+      color: new FormControl('', {nonNullable: true}),
+      lineWidth: new FormControl<number>(0, {nonNullable: true})
+    }),
+    mainTemperature: new FormGroup<ControlsOf<modalAppearance>>({
+      name: new FormControl('', {nonNullable: true}),
+      color: new FormControl('', {nonNullable: true}),
+      lineWidth: new FormControl<number>(0, {nonNullable: true})
+    }),
+    mainDewPoint: new FormGroup<ControlsOf<modalAppearance>>({
+      name: new FormControl('', {nonNullable: true}),
+      color: new FormControl('', {nonNullable: true}),
+      lineWidth: new FormControl<number>(0, {nonNullable: true})
     }),
   });
   listOfPropertiesToEdit: string[] = [];
