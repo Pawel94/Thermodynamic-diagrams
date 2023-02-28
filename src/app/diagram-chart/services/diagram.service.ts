@@ -41,6 +41,7 @@ export class DiagramService {
 
   public getNewData(date?: any, stationNummer?: string): Observable<dataFromObservations> {
     if (date && stationNummer) this.prepareDataToHTTPGet(date, stationNummer)
+    console.log(this.dateMonth)
     return this.http
       .get<dataFromObservations>(`https://radiosonde.mah.priv.at/data/station/${this.stationStartNumber}/${this.stationEndNumber}/2023/${this.dateMonth}/fm94/${this.stationNummer}_${this.date}_120000.geojson`)
       .pipe(map(element => {

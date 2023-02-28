@@ -49,9 +49,7 @@ export class DiagramComponent extends AbstractDiagram implements OnInit {
     for (let i = -80; i < 150; i += 10) {
       let dryAdiobatsSeries = this.drawLineFunction(generateDryAdiabatFunctionForEmagram(i), this.chartAppearance!.dryAdiabaticFunctionAppearance)
       this.emagramChart.series.push(dryAdiobatsSeries)
-
     }
-    console.log(this.emagramChart.series)
   }
 
 
@@ -63,7 +61,6 @@ export class DiagramComponent extends AbstractDiagram implements OnInit {
   }
 
   private generateSaturationMixingRatioLines() {
-
     let ratio = [1, 2, 3, 4, 6, 8, 10, 15, 20, 30, 40, 60, 80, 100]
     let result: any = []
     ratio.forEach(x => {

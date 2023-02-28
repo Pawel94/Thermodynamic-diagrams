@@ -47,8 +47,6 @@ import { ChartOptionFormGroupComponent } from './manager/components/chart-option
     SpinnerComponent,
     MainPageComponent,
     ChartOptionFormGroupComponent,
-
-
   ],
   imports: [
     BrowserModule,

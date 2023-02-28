@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {
   generateDryAdiabatFunctionForSkewT,
   generateMoistAdiabaticSkewTLine,
@@ -38,6 +38,7 @@ export class DiagramSkewTComponent extends AbstractDiagram implements OnInit {
       this.drawFunction()
     })
   }
+
 
   private generateMoistAdiabatsLines() {
     for (let i = -80; i < 90; i += 10) {

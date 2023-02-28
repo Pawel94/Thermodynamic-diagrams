@@ -1,20 +1,7 @@
 <ng-container *ngIf="{data:dataFromActivationRoute$ |async , chart:chartView$ | async}">
   <div class="container">
     <div class="row">
-      <div @fade *ngIf="isViewEmagram()">
-        <app-diagram
-          [data$]="dataToDiagramChart$"
-          (newChartData)="updateDataFromChart($event)"
-          [HighChart]="Highcharts"
-        ></app-diagram>
-      </div>
-      <div @fade *ngIf="isViewSkewT()">
-        <app-diagram-skew-t
-          [data$]="dataToSkewTChart$"
-          [HighChart]="Highcharts"
-        >
-        </app-diagram-skew-t>
-      </div>
+      <ng-container *ngIf="isViewEmagram() then emagramChart else skewTChart"></ng-container>
     </div>
     <div class="row">
       <app-manager-container></app-manager-container>
@@ -22,3 +9,21 @@
   </div>
 </ng-container>
 
+
+<ng-template #emagramChart>
+  <div @fade>
+    <app-diagram
+      [data$]="dataToDiagramChart$"
+      (newChartData)="updateDataFromChart($event)"
+      [HighChart]="Highcharts"
+    ></app-diagram>
+  </div>
+</ng-template>
+<ng-template #skewTChart>
+  <div @fade>
+    <app-diagram-skew-t
+      [data$]="dataToSkewTChart$"
+      [HighChart]="Highcharts"
+    ></app-diagram-skew-t>
+  </div>
+</ng-template>

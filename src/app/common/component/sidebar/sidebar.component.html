@@ -1,21 +1,24 @@
+<ng-container *ngIf="sidebarInfo$ |async">
+</ng-container>
 <div class="stikedStyle d-flex flex-column flex-shrink-0 p-3 text-bg-dark"
      style="width:210px; height: 100%">
   <div class="text-center">
     <h2>Meteo Chart</h2>
     <hr>
     <div class="divider">Current date</div>
-    <div *ngIf="loaderService.isLoading | async; else notLoading">
+
+    <div *ngIf="loader$ | async; else notLoading">
       <app-spinner></app-spinner>
     </div>
     <ng-template #notLoading>
     <p style="color:#74b999;">  {{getDataFromStation()}}</p>
     </ng-template>
     <div class="divider">Current station</div>
-    <div *ngIf="loaderService.isLoading | async; else notLoading">
+    <div *ngIf="loader$ | async; else notLoadingPlace">
       <app-spinner></app-spinner>
     </div>
-    <ng-template #notLoading>
-      <p style="color:#74b999;"> {{getStationName()}}</p>
+    <ng-template #notLoadingPlace>
+       <p style="color:#74b999;"> {{getStationName()}}</p>
     </ng-template>
   </div>
   <ul class="nav nav-pills flex-column text-center ">

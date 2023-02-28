@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {animate, style, transition, trigger} from "@angular/animations";
 import {tap} from "rxjs";
 import {ErrorHandlerService} from "../../../services/error-handler-notification/error-handler.service";
@@ -9,6 +9,7 @@ import {InfoHandlerService} from "../../../services/info-handler-notification/in
   selector: 'app-notifiaction',
   templateUrl: './notifiaction.component.html',
   styleUrls: ['./notifiaction.component.scss'],
+  changeDetection:ChangeDetectionStrategy.OnPush,
   animations: [
     trigger('fade', [
       transition(':enter', [

@@ -50,7 +50,6 @@ export class DiagramContainerComponent {
   private chartViewName?: string;
 
   constructor(private readonly thermoDataService: ThermodataService,
-              private readonly diagramService: DiagramService,
               private readonly chartViewDataService: ChartViewService,
               private readonly zoom: ZoomChartService,
               private readonly chartAppearance: ChartAppearanceService,
@@ -61,10 +60,6 @@ export class DiagramContainerComponent {
 
   updateDataFromChart($event: any) {
     console.log($event)
-  }
-
-  isViewSkewT() {
-    return this.chartViewName === "SkewT"
   }
 
   isViewEmagram() {

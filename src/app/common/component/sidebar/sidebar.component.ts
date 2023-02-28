@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {ThermodataService} from "../../services/share-services/thermodata/thermodata.service";
 import {properties} from "../../../diagram-chart/modal/modal";
 import {StationSearchModelComponent} from "../../../stationManager/station-search-model/station-search-model.component";
@@ -8,11 +8,13 @@ import {ChartViewService} from "../../services/share-services/chart-view/chart-v
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {ZoomChartService} from "../../services/share-services/zoom-chart/zoom-chart.service";
 import {LoaderService} from "../../services/load-service/load-service";
+import {combineLatest, map} from "rxjs";
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger('menuOptionsBackground', [
       state('DEFAULT', style({backgroundColor: 'transparent'})),
@@ -22,12 +24,17 @@ import {LoaderService} from "../../services/load-service/load-service";
   ],
 })
 export class SidebarComponent implements OnInit {
-  @Input() isExpanded: boolean = false;
   @Output() toggleSidebar: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  chartOption$?:string
+  chartOption$?: string
   dataProperties?: properties
-  public zoomFlag: boolean = false;
+  zoomFlag: boolean = false;
+  loader$ = this.loaderService.isLoading;
+  sidebarInfo$ = combineLatest([this.thermoService.stationData$, this.chartViewDataService.actualChartName$]).pipe(map(([stationData, chartName]) => {
+    this.dataProperties = stationData;
+    this.chartOption$ = chartName
+  }))
+
 
   constructor(private readonly thermoService: ThermodataService,
               private readonly chartViewDataService: ChartViewService,
@@ -37,8 +44,6 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.thermoService.stationData$.subscribe(data => this.dataProperties = data)
-    this.chartViewDataService.actualChartName$.subscribe(data => this.chartOption$=data)
   }
 
   getDataFromStation() {
@@ -46,7 +51,7 @@ export class SidebarComponent implements OnInit {
   }
 
   getStationName() {
-    return this.dataProperties?.gts_topic.split('/')[1].toUpperCase() + ' ' + this.dataProperties?.station_id
+    return this.dataProperties?.gts_topic?.split('/')[1].toUpperCase() + ' ' + this.dataProperties?.station_id
   }
 
   setView(view: string) {
