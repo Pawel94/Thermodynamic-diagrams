@@ -10,27 +10,31 @@
       <div class="modal-body">
         <form [formGroup]="searchForm">
           <div class="mb-3">
-            <label for="dateOfBirth" class="text-success">Date of measurement</label>
+            <label for="calendar" class="text-success">Date of measurement</label>
             <div class="input-group">
               <input
-                id="dateOfBirth"
+                id="calendar"
                 class="form-control"
                 formControlName="calendar"
                 placeholder="yyyy-mm-dd"
                 name="dp"
                 ngbDatepicker
                 #dp="ngbDatepicker"
+
               />
               <button class="btn btn-outline-secondary bi bi-calendar3" (click)="dp.toggle()" type="button"></button>
             </div>
+            <div class="text-danger" *ngIf="searchForm.controls?.['calendar']?.errors?.['notValidDate']">
+              <small>Date is not correct!</small>
+            </div>
           </div>
-          <label for="stationNummer" class="text-success">Station number:</label>
-          <select id="stationNummer" formControlName="stationNummer" class="form-select">
-            <option class="" selected value="12374">Station:12374 - Warszawa</option>
+
+          <label for="stationNumber" class="text-success">Station number:</label>
+          <select id="stationNumber" formControlName="stationNumber" class="form-select">
+            <option selected value="12374">Station:12374 - Warszawa</option>
             <option value="12425">Station:12425 - Wroclaw</option>
-<!--            <option value="3">Three</option>-->
           </select>
-<!--          <input id="stationNummer" type="number" class="form-control" formControlName="stationNummer"/>-->
+
           <button (click)="getDataFromStation()" class="btn btn btn-outline-success mt-2"> Get data
           </button>
         </form>

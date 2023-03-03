@@ -5,6 +5,8 @@ import {dataFromObservations, features, pointTO} from "../modal/modal";
 import {SuccessHandlerService} from "../../common/services/success-handler-notification/success-handler.service";
 import {catchError} from "rxjs/operators";
 import {ErrorHandlerService} from "../../common/services/error-handler-notification/error-handler.service";
+import {dataFormat} from "../../stationManager/station-search-model/station-search-model.component";
+import {ThermodataService} from "../../common/services/share-services/thermodata/thermodata.service";
 
 
 @Injectable({
@@ -19,7 +21,8 @@ export class DiagramService {
 
   constructor(private readonly http: HttpClient,
               private readonly successNotification: SuccessHandlerService,
-              private readonly notificationError: ErrorHandlerService) {
+              private readonly notificationError: ErrorHandlerService,
+              private readonly thermoDataService: ThermodataService,) {
   }
 
   public setStartUpData(): Observable<dataFromObservations> {
@@ -39,9 +42,8 @@ export class DiagramService {
       )
   }
 
-  public getNewData(date?: any, stationNummer?: string): Observable<dataFromObservations> {
-    if (date && stationNummer) this.prepareDataToHTTPGet(date, stationNummer)
-    console.log(this.dateMonth)
+  public getNewData(date: dataFormat, stationNumber: string): Observable<dataFromObservations> {
+    this.prepareDataToHTTPGet(date, stationNumber)
     return this.http
       .get<dataFromObservations>(`https://radiosonde.mah.priv.at/data/station/${this.stationStartNumber}/${this.stationEndNumber}/2023/${this.dateMonth}/fm94/${this.stationNummer}_${this.date}_120000.geojson`)
       .pipe(map(element => {
@@ -51,7 +53,8 @@ export class DiagramService {
             mappedDataToChart: this.measuredData(element.features)
           }
         }),
-        tap(() => this.successNotification.setSuccessMessage("Loaded data", {stationNummer, date}))
+        tap(dataToChart => this.thermoDataService.setActualTermoData(dataToChart)),
+        tap(() => this.successNotification.setSuccessMessage("Loaded data", {stationNummer: stationNumber, date}))
         , catchError(err => {
           this.notificationError.setErrorMessage("Cannot get data for current data", err)
           return of({} as dataFromObservations)
@@ -87,12 +90,12 @@ export class DiagramService {
     return measuredData
   }
 
-  private prepareDataToHTTPGet(date: any, stationNummer: string) {
+  private prepareDataToHTTPGet(date: any, stationNumber: string) {
     this.dateMonth = ('0' + date.month).slice(-2)
     this.date = String(date.year) + this.dateMonth + ('0' + String(date.day)).slice(-2)
-    this.stationNummer = stationNummer
-    this.stationStartNumber = (Number(stationNummer) / 1000).toFixed(0);
-    this.stationEndNumber = Number(stationNummer) % 1000;
+    this.stationNummer = stationNumber
+    this.stationStartNumber = (Number(stationNumber) / 1000).toFixed(0);
+    this.stationEndNumber = Number(stationNumber) % 1000;
   }
 
 }

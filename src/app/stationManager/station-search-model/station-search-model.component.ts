@@ -1,18 +1,26 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
+import {AbstractControl, FormControl, FormGroup, UntypedFormGroup, ValidatorFn} from "@angular/forms";
 import {DiagramService} from "../../diagram-chart/services/diagram.service";
 import {ThermodataService} from "../../common/services/share-services/thermodata/thermodata.service";
+
+
+export interface dataFormat {
+  year: string,
+  month: string,
+  day: string
+}
+
 
 @Component({
   selector: 'app-station-search-model',
   templateUrl: './station-search-model.component.html',
   styleUrls: ['./station-search-model.component.scss'],
 })
-export class StationSearchModelComponent implements OnInit {
-  searchForm: UntypedFormGroup = new UntypedFormGroup({
-      calendar: new UntypedFormControl('',),
-      stationNummer: new UntypedFormControl('',),
+export class StationSearchModelComponent {
+  searchForm: UntypedFormGroup = new FormGroup({
+      calendar: new FormControl<dataFormat | string>("", [dateValidator()],),
+      stationNumber: new FormControl<string>('', {nonNullable: true}),
     },
   );
 
@@ -20,14 +28,6 @@ export class StationSearchModelComponent implements OnInit {
               private readonly thermoDataService: ThermodataService,
               private readonly diagramService: DiagramService
   ) {
-    this.searchForm.valueChanges
-      .subscribe(values => {
-        let date = new Date();
-        date.setFullYear(values.calendar.year, values.calendar.month, values.calendar.day)
-      })
-  }
-
-  ngOnInit(): void {
   }
 
 
@@ -36,11 +36,22 @@ export class StationSearchModelComponent implements OnInit {
   }
 
   getDataFromStation() {
-    const date = this.searchForm.get("calendar")?.value
-    const station = this.searchForm.get("stationNummer")?.value
-    this.diagramService.getNewData(date, station).subscribe(dataToChart => {
-        this.thermoDataService.setActualTermoData(dataToChart)
-        this.closeModal()
-      },)
+    const date: dataFormat = this.searchForm.get("calendar")?.value
+    const station: string = this.searchForm.get("stationNumber")?.value
+    this.diagramService.getNewData(date, station).subscribe(() => {
+      this.closeModal()
+    },)
   }
+
+}
+
+function dateValidator(): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: boolean } | null => {
+    if (!control.value) return null;
+    const parsedDate = new Date()
+    const {year, month, day} = control.value;
+    parsedDate.setFullYear(year, month - 1, day)
+    return Date.now() > parsedDate.getTime()
+      ? null : {notValidDate: true};
+  };
 }

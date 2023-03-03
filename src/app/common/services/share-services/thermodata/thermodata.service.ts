@@ -18,7 +18,6 @@ export class ThermodataService {
   dataToTable$ = this.dataToTable.asObservable()
 
   constructor() {
-
   }
 
   setActualTermoData(data: any) {
