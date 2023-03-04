@@ -3,7 +3,7 @@
 * [Technologies](#technologies)
 * [Setup](#setup)
 * [Status](#status)
-* visit https://meto-chart.web.app/?fbclid=IwAR3ilsLK24cJrWygC7DcZlojpZtBhlAYkoCSuasifLbMkB3i6_HDCT2_6mg
+* visit https://meto-chart.web.app/
 ## General info
 An application for creating and manipulating meterological data. There are atkually 2 scew-t charts and an emagram available. 
 
