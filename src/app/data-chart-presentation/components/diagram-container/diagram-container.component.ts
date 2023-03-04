@@ -1,7 +1,9 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {combineLatest, map, Observable, tap} from "rxjs";
-import {ThermodataService} from "../../../common/services/share-services/thermodata/thermodata.service";
-import {chartService} from "../../../common/services/server-communication/chart.service";
+import {
+  listOfPointsToChart,
+  MeteoDataService
+} from "../../../common/services/share-services/meteo-data/meteo-data.service";
 import * as Highcharts from "highcharts";
 import {ChartViewService} from "../../../common/services/share-services/chart-view/chart-view.service";
 import {animate, style, transition, trigger} from "@angular/animations";
@@ -10,7 +12,7 @@ import {
   chartAppearance,
   ChartAppearanceService
 } from "../../../common/services/share-services/chart-apperance/chart-appearance.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Data} from "@angular/router";
 
 const Draggable = require("highcharts/modules/draggable-points.js");
 Draggable(Highcharts);
@@ -37,19 +39,19 @@ Exporting(Highcharts);
 
 })
 export class DiagramContainerComponent {
-  mappedDataToDiagram$: Observable<any> = this.thermoDataService.mappedDataToDiagram$
+  mappedDataToDiagram$: Observable<listOfPointsToChart> = this.meteoDataService.mappedDataToDiagram$
+  mappedDataToSkewTDiagram$: Observable<listOfPointsToChart> = this.meteoDataService.mappedDataToSkewTDiagram$
   isZoomed: Observable<boolean> = this.zoom.zoomChartState$;
-  mappedDataToSkewTDiagram$: Observable<any> = this.thermoDataService.mappedDataToSkewTDiagram$
   Highcharts: typeof Highcharts = Highcharts;
   chartView$: Observable<string> = this.chartViewDataService.actualChartName$.pipe(map(chartName => this.chartViewName = chartName))
   chartAppearance$: Observable<chartAppearance> = this.chartAppearance.chartAppearance$
-  dataToDiagramChart$: Observable<any> = combineLatest([this.mappedDataToDiagram$, this.isZoomed, this.chartAppearance$])
-  dataToSkewTChart$: Observable<any> = combineLatest([this.mappedDataToSkewTDiagram$, this.isZoomed, this.chartAppearance$])
-  dataFromActivationRoute$: Observable<any> = this.activatedRoute.data.pipe(tap(dataToChart => this.thermoDataService.setActualTermoData(dataToChart['startUpData'])))
+  dataToDiagramChart$: Observable<[listOfPointsToChart, boolean, chartAppearance]> = combineLatest([this.mappedDataToDiagram$, this.isZoomed, this.chartAppearance$])
+  dataToSkewTChart$: Observable<[listOfPointsToChart, boolean, chartAppearance]> = combineLatest([this.mappedDataToSkewTDiagram$, this.isZoomed, this.chartAppearance$])
+  dataFromActivationRoute$: Observable<Data> = this.activatedRoute.data.pipe(tap(dataToChart => this.meteoDataService.setActualMeteoData(dataToChart['startUpData'])))
 
   private chartViewName?: string;
 
-  constructor(private readonly thermoDataService: ThermodataService,
+  constructor(private readonly meteoDataService: MeteoDataService,
               private readonly chartViewDataService: ChartViewService,
               private readonly zoom: ZoomChartService,
               private readonly chartAppearance: ChartAppearanceService,

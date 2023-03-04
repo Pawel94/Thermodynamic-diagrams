@@ -1,14 +1,14 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {animate, style, transition, trigger} from "@angular/animations";
 import {tap} from "rxjs";
-import {ErrorHandlerService} from "../../../services/error-handler-notification/error-handler.service";
-import {SuccessHandlerService} from "../../../services/success-handler-notification/success-handler.service";
-import {InfoHandlerService} from "../../../services/info-handler-notification/info-handler.service";
+import {ErrorHandlerService} from "../../services/error-handler-notification/error-handler.service";
+import {SuccessHandlerService} from "../../services/success-handler-notification/success-handler.service";
+import {InfoHandlerService} from "../../services/info-handler-notification/info-handler.service";
 
 @Component({
-  selector: 'app-notifiaction',
-  templateUrl: './notifiaction.component.html',
-  styleUrls: ['./notifiaction.component.scss'],
+  selector: 'app-notification',
+  templateUrl: './notification.component.html',
+  styleUrls: ['./notification.component.scss'],
   changeDetection:ChangeDetectionStrategy.OnPush,
   animations: [
     trigger('fade', [
@@ -22,7 +22,7 @@ import {InfoHandlerService} from "../../../services/info-handler-notification/in
     ]),
   ],
 })
-export class NotifiactionComponent implements OnInit {
+export class NotificationComponent implements OnInit {
   successMessage$ = this.successNotificationService.successMessageSubject$.pipe(
     tap(() => {
       setTimeout(() => {

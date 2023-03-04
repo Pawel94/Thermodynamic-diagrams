@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-error-page',
@@ -6,11 +6,10 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./error-page.component.scss'],
   standalone: true
 })
-export class ErrorPageComponent implements OnInit {
+export class ErrorPageComponent {
 
   constructor() {
   }
 
-  ngOnInit(): void {
-  }
+
 }

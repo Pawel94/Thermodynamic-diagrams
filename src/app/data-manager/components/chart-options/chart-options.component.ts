@@ -5,7 +5,7 @@ import {
   ChartAppearanceService
 } from "../../../common/services/share-services/chart-apperance/chart-appearance.service";
 import {debounceTime, distinctUntilChanged, first, tap} from "rxjs";
-import {modalAppearance} from "../../../data-chart-presentation/model/apperanceModel";
+import {modalAppearance} from "../../../common/services/share-services/model/apperanceModel";
 
 
 export type ControlsOf<T extends Record<string, any>> = {

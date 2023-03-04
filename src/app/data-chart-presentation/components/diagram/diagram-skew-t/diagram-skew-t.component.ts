@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {
   generateDryAdiabatFunctionForSkewT,
   generateMoistAdiabaticSkewTLine,
@@ -6,6 +6,8 @@ import {
 } from "../../../../common/caluclations/calculations";
 import {Observable} from "rxjs";
 import {AbstractDiagram} from "../../abstract-diagram/abstractDiagram";
+import {listOfPointsToChart} from "../../../../common/services/share-services/meteo-data/meteo-data.service";
+import {chartAppearance} from "../../../../common/services/share-services/chart-apperance/chart-appearance.service";
 
 @Component({
   selector: 'app-diagram-skew-t',
@@ -16,7 +18,7 @@ import {AbstractDiagram} from "../../abstract-diagram/abstractDiagram";
 export class DiagramSkewTComponent extends AbstractDiagram implements OnInit {
 
   @Input() HighChart: any
-  @Input() data$!: Observable<any>
+  @Input() data$!: Observable<[listOfPointsToChart, boolean, chartAppearance]>
   updateFlag = false;
 
   constructor() {
@@ -26,7 +28,7 @@ export class DiagramSkewTComponent extends AbstractDiagram implements OnInit {
   skewT: any
 
   ngOnInit(): void {
-    this.data$.subscribe(([chartData, zoom, chartAppearance]: any) => {
+    this.data$.subscribe(([chartData, zoom, chartAppearance]: [listOfPointsToChart, boolean, chartAppearance]) => {
       this.zoomFlag = zoom;
       this.chartAppearance = chartAppearance
       this.actualObservationTemperature = chartData?.listOfPointsTemperature

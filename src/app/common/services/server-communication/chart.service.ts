@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {map, Observable, of, tap} from "rxjs";
-import {dataFromObservations, features, pointTO} from "../../../data-chart-presentation/model/modal";
+import {dataFromObservationsServer, features, pointTO} from "../share-services/model/modelDataFromServer";
 import {SuccessHandlerService} from "../success-handler-notification/success-handler.service";
 import {catchError} from "rxjs/operators";
 import {ErrorHandlerService} from "../error-handler-notification/error-handler.service";
-import {ThermodataService} from "../share-services/thermodata/thermodata.service";
+import {MeteoDataService} from "../share-services/meteo-data/meteo-data.service";
 import {dataFormat} from "../../../meteorological-station/model/model";
 
 
@@ -22,41 +22,41 @@ export class chartService {
   constructor(private readonly http: HttpClient,
               private readonly successNotification: SuccessHandlerService,
               private readonly notificationError: ErrorHandlerService,
-              private readonly thermoDataService: ThermodataService,) {
+              private readonly thermoDataService: MeteoDataService,) {
   }
 
-  public setStartUpData(): Observable<dataFromObservations> {
+  public setStartUpData(): Observable<dataFromObservationsServer> {
     return this.http
-      .get<dataFromObservations>(`https://radiosonde.mah.priv.at/data/station/12/374/2023/01/fm94/12374_20230127_120000.geojson`)
+      .get<dataFromObservationsServer>(`https://radiosonde.mah.priv.at/data/station/12/374/2023/01/fm94/12374_20230127_120000.geojson`)
       .pipe(
         map(element => ({
             properties: element.properties,
             features: this.mapPoints(element.features),
             mappedDataToChart: this.measuredData(element.features)
-          } as dataFromObservations
+          } as dataFromObservationsServer
         ))
         , catchError(() => {
-          return of({} as dataFromObservations)
+          return of({} as dataFromObservationsServer)
         })
       )
 
   }
 
-  public getNewData(date: dataFormat, stationNumber: string): Observable<dataFromObservations> {
+  public getNewData(date: dataFormat, stationNumber: string): Observable<dataFromObservationsServer> {
     this.prepareDataToHTTPGet(date, stationNumber)
     return this.http
-      .get<dataFromObservations>(`https://radiosonde.mah.priv.at/data/station/${this.stationStartNumber}/${this.stationEndNumber}/2023/${this.dateMonth}/fm94/${this.stationNummer}_${this.date}_120000.geojson`)
+      .get<dataFromObservationsServer>(`https://radiosonde.mah.priv.at/data/station/${this.stationStartNumber}/${this.stationEndNumber}/2023/${this.dateMonth}/fm94/${this.stationNummer}_${this.date}_120000.geojson`)
       .pipe(map(element => ({
             properties: element.properties,
             features: this.mapPoints(element.features),
             mappedDataToChart: this.measuredData(element.features)
-          } as dataFromObservations
+          } as dataFromObservationsServer
         )),
-        tap(dataToChart => this.thermoDataService.setActualTermoData(dataToChart)),
+        tap(dataToChart => this.thermoDataService.setActualMeteoData(dataToChart)),
         tap(() => this.successNotification.setSuccessMessage("Loaded data", {stationNumber: stationNumber, date}))
         , catchError(err => {
           this.notificationError.setErrorMessage("Cannot get data for current data", err)
-          return of({} as dataFromObservations)
+          return of({} as dataFromObservationsServer)
         })
       )
   }

@@ -6,6 +6,8 @@ import {
 } from "../../../../common/caluclations/calculations";
 import {Observable} from "rxjs";
 import {AbstractDiagram} from "../../abstract-diagram/abstractDiagram";
+import {listOfPointsToChart} from "../../../../common/services/share-services/meteo-data/meteo-data.service";
+import {chartAppearance} from "../../../../common/services/share-services/chart-apperance/chart-appearance.service";
 
 
 @Component({
@@ -17,7 +19,7 @@ import {AbstractDiagram} from "../../abstract-diagram/abstractDiagram";
 export class DiagramComponent extends AbstractDiagram implements OnInit {
   updateFlag = false;
 
-  @Input() data$!: Observable<any>
+  @Input() data$!: Observable<[listOfPointsToChart,boolean,chartAppearance]>
   @Output() newChartData = new EventEmitter<any>();
   rage2: number[] = [1100, 1000, 900, 800, 700, 600, 500, 400, 300, 200, 100]
   coreData?: any;
@@ -26,7 +28,7 @@ export class DiagramComponent extends AbstractDiagram implements OnInit {
 
 
   ngOnInit(): void {
-    this.data$.subscribe(([chartData, zoom, chartAppearance]: any) => {
+    this.data$.subscribe(([chartData, zoom, chartAppearance]: [listOfPointsToChart,boolean,chartAppearance]) => {
         this.zoomFlag = zoom;
         this.chartAppearance = chartAppearance
         this.actualObservationTemperature = chartData?.listOfPointsTemperature

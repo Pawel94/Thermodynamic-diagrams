@@ -8,27 +8,8 @@ export class pointTO {
   }
 }
 
-export interface chartSerie {
-  name: string
-  data?: any,
-  marker?: {
-    enabled: false
-  },
-  color?: string,
-  dashStyle?: string,
-  lineWidth?: number,
-  id?: string,
-  linkedTo?: string
-  zIndex?: number
-}
 
-export interface sharedObservationData {
-  mappedDataToChart: pointTO[]
-  coreData?: dataFromObservations
-  modifiedData: measuredData[]
-}
-
-export interface dataFromObservations {
+export interface dataFromObservationsServer {
   features: features[]
   properties: properties
   mappedDataToChart: measuredData[]

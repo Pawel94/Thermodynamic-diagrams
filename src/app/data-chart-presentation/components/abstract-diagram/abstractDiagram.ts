@@ -1,11 +1,11 @@
-import {pointTO} from "../../model/modal";
 import {chartAppearance} from "../../../common/services/share-services/chart-apperance/chart-appearance.service";
-import {modalAppearance} from "../../model/apperanceModel";
+import {modalAppearance} from "../../../common/services/share-services/model/apperanceModel";
+import {chartPoint} from "../../../common/services/share-services/meteo-data/meteo-data.service";
 
 export abstract class AbstractDiagram {
   rage: number[] = [1000, 900, 800, 700, 600, 500, 400, 300, 200, 100]
-  actualObservationTemperature?: pointTO[]
-  actualObservationDewTemperature?: pointTO[]
+  actualObservationTemperature?: chartPoint[]
+  actualObservationDewTemperature?: chartPoint[]
   zoomFlag = false;
   chartAppearance!: chartAppearance
 

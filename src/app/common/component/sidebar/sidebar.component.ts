@@ -1,9 +1,7 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {ThermodataService} from "../../services/share-services/thermodata/thermodata.service";
-import {properties} from "../../../data-chart-presentation/model/modal";
-import {StationSearchModelComponent} from "../../../meteorological-station/components/station-search-model/station-search-model.component";
+import {MeteoDataService} from "../../services/share-services/meteo-data/meteo-data.service";
+import {properties} from "../../services/share-services/model/modelDataFromServer";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {InfoModalComponent} from "../info-modal/info-modal.component";
 import {ChartViewService} from "../../services/share-services/chart-view/chart-view.service";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {ZoomChartService} from "../../services/share-services/zoom-chart/zoom-chart.service";
@@ -36,7 +34,7 @@ export class SidebarComponent implements OnInit {
   }))
 
 
-  constructor(private readonly thermoService: ThermodataService,
+  constructor(private readonly thermoService: MeteoDataService,
               private readonly chartViewDataService: ChartViewService,
               public readonly modalService: NgbModal,
               private readonly zoomService: ZoomChartService,
@@ -59,21 +57,15 @@ export class SidebarComponent implements OnInit {
   }
 
   openModal() {
-    const modalRef = this.modalService.open(StationSearchModelComponent);
-    modalRef.result.then((result) => {
-      console.log(result);
-    }).catch((error) => {
-      console.log(error);
-    });
+    import("../../../meteorological-station/components/station-search-model/station-search-model.component").then(
+      (m) => this.modalService.open(m.StationSearchModelComponent)
+    );
   }
 
   openInfoModal() {
-    const modalRef = this.modalService.open(InfoModalComponent);
-    modalRef.result.then((result) => {
-      console.log(result);
-    }).catch((error) => {
-      console.log(error);
-    });
+    import("../info-modal/info-modal.component").then(
+      (m) => this.modalService.open(m.InfoModalComponent)
+    );
   }
 
   activateZoomingChart() {

@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {AbstractControl, FormControl, FormGroup, UntypedFormGroup, ValidatorFn} from "@angular/forms";
 import {chartService} from "../../../common/services/server-communication/chart.service";
-import {ThermodataService} from "../../../common/services/share-services/thermodata/thermodata.service";
+import {MeteoDataService} from "../../../common/services/share-services/meteo-data/meteo-data.service";
 import {dataFormat} from "../../model/model";
 import {Router} from "@angular/router";
 
@@ -21,7 +21,7 @@ export class StationSearchModelComponent {
   );
 
   constructor(private readonly activeModal: NgbActiveModal,
-              private readonly thermoDataService: ThermodataService,
+              private readonly thermoDataService: MeteoDataService,
               private readonly diagramService: chartService,
               private readonly router: Router,
   ) {
