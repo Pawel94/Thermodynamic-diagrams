@@ -1,6 +1,6 @@
 <div *ngIf="loadedDefaultOptions$ | async;" class="align-items-center">
   <div class="d-flex justify-content-center">
-    <form [formGroup]="chartOptionsForm" (ngSubmit)="save()">
+    <form [formGroup]="chartOptionsForm">
       <ng-container *ngFor="let item of listOfPropertiesToEdit">
         <app-chart-option-form-group [formGroupName]=item
                                      class="row"></app-chart-option-form-group>

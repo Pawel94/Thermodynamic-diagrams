@@ -18,7 +18,7 @@ export type ControlsOf<T extends Record<string, any>> = {
   selector: 'app-chart-options',
   templateUrl: './chart-options.component.html',
   styleUrls: ['./chart-options.component.scss'],
-  changeDetection:ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChartOptionsComponent implements OnInit {
 
@@ -26,22 +26,28 @@ export class ChartOptionsComponent implements OnInit {
     dryAdiabaticFunctionAppearance: new FormGroup<ControlsOf<modalAppearance>>({
       name: new FormControl('', {nonNullable: true}),
       color: new FormControl('', {nonNullable: true}),
-      lineWidth: new FormControl<number>(0, {nonNullable: true})
+      lineWidth: new FormControl<number>(0, {nonNullable: true}),
+      linkedTo: new FormControl<string>("1", {nonNullable: true})
     }),
     ratioFunctionAppearance: new FormGroup<ControlsOf<modalAppearance>>({
       name: new FormControl('', {nonNullable: true}),
       color: new FormControl('', {nonNullable: true}),
-      lineWidth: new FormControl<number>(0, {nonNullable: true})
+      lineWidth: new FormControl<number>(0, {nonNullable: true}),
+      linkedTo: new FormControl<string>("2", {nonNullable: true})
     }),
     moistAdiabaticFunctionAppearance: new FormGroup<ControlsOf<modalAppearance>>({
       name: new FormControl('', {nonNullable: true}),
       color: new FormControl('', {nonNullable: true}),
-      lineWidth: new FormControl<number>(0, {nonNullable: true})
+      lineWidth: new FormControl<number>(0, {nonNullable: true}),
+      linkedTo: new FormControl<string>("3", {nonNullable: true})
+
     }),
     temperatureFunction: new FormGroup<ControlsOf<modalAppearance>>({
       name: new FormControl('', {nonNullable: true}),
       color: new FormControl('', {nonNullable: true}),
-      lineWidth: new FormControl<number>(0, {nonNullable: true})
+      lineWidth: new FormControl<number>(0, {nonNullable: true}),
+      linkedTo: new FormControl<string>("4", {nonNullable: true})
+
     }),
     mainTemperature: new FormGroup<ControlsOf<modalAppearance>>({
       name: new FormControl('', {nonNullable: true}),
@@ -65,20 +71,14 @@ export class ChartOptionsComponent implements OnInit {
   )
 
   constructor(private readonly chartAppearance: ChartAppearanceService) {
+  }
+
+  ngOnInit(): void {
     this.chartOptionsForm.valueChanges.pipe(debounceTime(400), distinctUntilChanged())
       .subscribe(newValues => {
-
-        console.log(newValues)
         this.chartAppearance.setChartAppearance(newValues as chartAppearance)
       })
 
   }
 
-  ngOnInit(): void {
-
-  }
-
-  save() {
-
-  }
 }
