@@ -3,7 +3,7 @@ import {
   generateDryAdiabatFunctionForEmagram,
   generateMoistAdiabaticEmagramLine,
   generateSaturationMixingRatioLine,
-} from "../../../../common/utils";
+} from "../../../../common/caluclations/calculations";
 import {Observable} from "rxjs";
 import {AbstractDiagram} from "../../abstract-diagram/abstractDiagram";
 

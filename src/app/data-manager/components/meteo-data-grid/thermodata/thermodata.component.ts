@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ThermodataService} from "../../../../common/services/share-services/thermodata/thermodata.service";
 import {Observable} from "rxjs";
-import {measuredData} from "../../../../diagram-chart/modal/modal";
+import {measuredData} from "../../../../data-chart-presentation/model/modal";
 import {CellValueChangedEvent, ColDef, GridApi, GridReadyEvent, RowClassRules} from "ag-grid-community";
 import {BtnCellShowComponent} from "../btn-cell-show/btn-cell-show.component";
 import {BtnCellRemoveComponent} from "../btn-cell-remove/btn-cell-remove.component";
@@ -114,9 +114,6 @@ export class ThermodataComponent implements OnInit {
 
   }
 
-  onRowsSelected() {
-
-  }
 
   getRowData() {
     let rowData: any[] = [];

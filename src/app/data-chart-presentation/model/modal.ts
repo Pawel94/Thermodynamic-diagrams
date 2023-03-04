@@ -38,7 +38,7 @@ export interface dataFromObservations {
 export interface properties {
   arrived: string,
   channel: string
-  elewation: string,
+  elevation: string,
   station_id: string
   gts_topic: string
 }
@@ -66,14 +66,6 @@ export interface measuredData {
   windDirection?: string
 }
 
-export let helperLine = {
-  color: 'rgba(227,12,12,0.32)',
-  enableMouseTracking: false,
-  dashStyle: 'Line',
-  zIndex: 5,
-  lineWidth: 1,
-  name: '',
-} as chartSerie
 
 
 

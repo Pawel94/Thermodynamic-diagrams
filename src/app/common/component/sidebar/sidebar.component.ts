@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {ThermodataService} from "../../services/share-services/thermodata/thermodata.service";
-import {properties} from "../../../diagram-chart/modal/modal";
-import {StationSearchModelComponent} from "../../../stationManager/station-search-model/station-search-model.component";
+import {properties} from "../../../data-chart-presentation/model/modal";
+import {StationSearchModelComponent} from "../../../meteorological-station/components/station-search-model/station-search-model.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {InfoModalComponent} from "../info-modal/info-modal.component";
 import {ChartViewService} from "../../services/share-services/chart-view/chart-view.service";

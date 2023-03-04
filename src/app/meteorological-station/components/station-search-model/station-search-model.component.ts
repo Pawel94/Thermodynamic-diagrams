@@ -1,32 +1,29 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {AbstractControl, FormControl, FormGroup, UntypedFormGroup, ValidatorFn} from "@angular/forms";
-import {DiagramService} from "../../diagram-chart/services/diagram.service";
-import {ThermodataService} from "../../common/services/share-services/thermodata/thermodata.service";
-
-
-export interface dataFormat {
-  year: string,
-  month: string,
-  day: string
-}
+import {chartService} from "../../../common/services/server-communication/chart.service";
+import {ThermodataService} from "../../../common/services/share-services/thermodata/thermodata.service";
+import {dataFormat} from "../../model/model";
+import {Router} from "@angular/router";
 
 
 @Component({
   selector: 'app-station-search-model',
   templateUrl: './station-search-model.component.html',
   styleUrls: ['./station-search-model.component.scss'],
+  changeDetection:ChangeDetectionStrategy.OnPush
 })
 export class StationSearchModelComponent {
   searchForm: UntypedFormGroup = new FormGroup({
-      calendar: new FormControl<dataFormat | string>("", [dateValidator()],),
+      calendar: new FormControl<dataFormat | string>("", [dateValidator(),temporaryValidator()]),
       stationNumber: new FormControl<string>('', {nonNullable: true}),
     },
   );
 
   constructor(private readonly activeModal: NgbActiveModal,
               private readonly thermoDataService: ThermodataService,
-              private readonly diagramService: DiagramService
+              private readonly diagramService: chartService,
+              private readonly router: Router,
   ) {
   }
 
@@ -40,6 +37,7 @@ export class StationSearchModelComponent {
     const station: string = this.searchForm.get("stationNumber")?.value
     this.diagramService.getNewData(date, station).subscribe(() => {
       this.closeModal()
+      this.router.navigate(['/']);
     },)
   }
 
@@ -53,5 +51,23 @@ function dateValidator(): ValidatorFn {
     parsedDate.setFullYear(year, month - 1, day)
     return Date.now() > parsedDate.getTime()
       ? null : {notValidDate: true};
+  };
+
+}
+function temporaryValidator(): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: boolean } | null => {
+    if (!control.value) return null;
+    const searchForm = control.parent;
+    const errors: boolean = searchForm?.get('calendar')?.errors?.[
+      'notValidDate'
+      ] as boolean;
+    if (errors) return null;
+    const parsedDate = new Date()
+    const temporaryDate = new Date(2023,0,31)
+    const {year, month, day} = control.value;
+    parsedDate.setFullYear(year, month - 1, day)
+
+    return temporaryDate > parsedDate
+      ? null : {notValidServerDate: true};
   };
 }

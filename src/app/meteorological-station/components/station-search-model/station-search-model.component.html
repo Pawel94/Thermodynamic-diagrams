@@ -27,6 +27,9 @@
             <div class="text-danger" *ngIf="searchForm.controls?.['calendar']?.errors?.['notValidDate']">
               <small>Date is not correct!</small>
             </div>
+            <div class="text-warning" *ngIf="searchForm.controls?.['calendar']?.errors?.['notValidServerDate']">
+              <small>Due to problems with outside server this data is can be not available! Check other date</small>
+            </div>
           </div>
 
           <label for="stationNumber" class="text-success">Station number:</label>

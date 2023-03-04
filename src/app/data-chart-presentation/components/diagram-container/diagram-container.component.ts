@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {combineLatest, map, Observable, tap} from "rxjs";
 import {ThermodataService} from "../../../common/services/share-services/thermodata/thermodata.service";
-import {DiagramService} from "../../services/diagram.service";
+import {chartService} from "../../../common/services/server-communication/chart.service";
 import * as Highcharts from "highcharts";
 import {ChartViewService} from "../../../common/services/share-services/chart-view/chart-view.service";
 import {animate, style, transition, trigger} from "@angular/animations";
@@ -38,7 +38,7 @@ Exporting(Highcharts);
 })
 export class DiagramContainerComponent {
   mappedDataToDiagram$: Observable<any> = this.thermoDataService.mappedDataToDiagram$
-  isZoomed: Observable<any> = this.zoom.zoomChartState$;
+  isZoomed: Observable<boolean> = this.zoom.zoomChartState$;
   mappedDataToSkewTDiagram$: Observable<any> = this.thermoDataService.mappedDataToSkewTDiagram$
   Highcharts: typeof Highcharts = Highcharts;
   chartView$: Observable<string> = this.chartViewDataService.actualChartName$.pipe(map(chartName => this.chartViewName = chartName))

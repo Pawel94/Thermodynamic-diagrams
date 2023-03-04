@@ -1,6 +1,6 @@
-import {pointTO} from "../../modal/modal";
+import {pointTO} from "../../model/modal";
 import {chartAppearance} from "../../../common/services/share-services/chart-apperance/chart-appearance.service";
-import {modalAppearance} from "../../modal/apperanceModel";
+import {modalAppearance} from "../../model/apperanceModel";
 
 export abstract class AbstractDiagram {
   rage: number[] = [1000, 900, 800, 700, 600, 500, 400, 300, 200, 100]

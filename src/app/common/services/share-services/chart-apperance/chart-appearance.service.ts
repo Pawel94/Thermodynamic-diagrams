@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
-import {modalAppearance} from "../../../../diagram-chart/modal/apperanceModel";
+import {modalAppearance} from "../../../../data-chart-presentation/model/apperanceModel";
 
 export interface chartAppearance {
   dryAdiabaticFunctionAppearance: modalAppearance;

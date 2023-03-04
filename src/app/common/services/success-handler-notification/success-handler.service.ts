@@ -17,7 +17,7 @@ export class SuccessHandlerService {
 
   setSuccessMessage(message: string, body?: any) {
     if (message !== '') {
-      message = this.messageSuccessForm + message + '\n' + this.messageStation + body.stationNummer +
+      message = this.messageSuccessForm + message + '\n' + this.messageStation + body.stationNumber +
         '\n' + this.messageDate + this.parseDate(body.date);
     }
     this.successMessageSubject.next(message);

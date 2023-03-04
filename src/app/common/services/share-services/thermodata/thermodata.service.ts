@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
-import {measuredData, sharedObservationData} from "../../../../diagram-chart/modal/modal";
+import {measuredData, sharedObservationData} from "../../../../data-chart-presentation/model/modal";
 
 @Injectable({
   providedIn: 'root'
