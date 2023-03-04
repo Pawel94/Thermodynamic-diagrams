@@ -5,9 +5,9 @@
 * [Status](#status)
 * visit https://meto-chart.web.app/
 ## General info
-An application for creating and manipulating meterological data. There are atkually 2 scew-t charts and an emagram available. 
+An application for creating and manipulating meterological data in chart. There are at the moment 2 available modals: scew-t charts and an emagram. 
 
-Available functions
+Available functions:
 * Current access to data (currently 2 cities)
 * Editing of data on the chart
 * Editing data in a table
